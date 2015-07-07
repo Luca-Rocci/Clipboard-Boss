@@ -3,7 +3,6 @@ package it.rocci.clipboss.ui.component;
 import it.rocci.clipboss.utils.Utils;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GraphicsConfiguration;
 import java.awt.GraphicsDevice;
@@ -12,17 +11,15 @@ import java.awt.Insets;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.Toolkit;
-import java.awt.Window;
-import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 
-public class NotificationPanel extends JFrame {
+public class NotificationPanel extends JDialog {
 
 	private static final long serialVersionUID = 1111111100000000112L;
 	public final Header header;	
@@ -43,10 +40,10 @@ public class NotificationPanel extends JFrame {
 		getRootPane().setBorder(BorderFactory.createLineBorder(Utils.getColorStart().darker(), 1));
 	
 	        setUndecorated( true );
-	        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	        setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 	        setBackground(Utils.getColorBackground());
 	        pack();
-	        setSize(new Dimension(240, 200));
+	        setSize(new Dimension(240, 70));
 	        setAlwaysOnTop(true);
 
 	}
@@ -110,6 +107,24 @@ public class NotificationPanel extends JFrame {
 	            device = lstDevices.get(0);
 	        }
 	        return device;
+	    }
+	    
+	    public static void showMessage(String message, int time) {
+	    	final NotificationPanel np = new NotificationPanel();
+	    	np.setLocationRelativeTo(null);
+	    	JLabel l = new JLabel(message);
+	    	l.setBorder(BorderFactory.createEmptyBorder(3, 3, 3, 3));
+	    	l.setAlignmentX(CENTER_ALIGNMENT);
+	    	l.setAlignmentY(CENTER_ALIGNMENT);
+	    	l.setBackground(Utils.getColorBackground());
+	    	l.setOpaque(true);
+	    	np.add(l, BorderLayout.CENTER);
+	    	np.setVisible(true);
+	    	try {
+				Thread.sleep(time);
+			} catch (InterruptedException e) { }
+	    	np.setVisible(false);
+	    	np.dispose();
 	    }
 
 }
