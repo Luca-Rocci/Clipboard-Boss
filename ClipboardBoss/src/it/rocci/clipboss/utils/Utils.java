@@ -28,39 +28,13 @@ import javax.swing.JList;
 public class Utils {
 
     private static Properties propTheme;
-    
-	public static class LabelListRenderer extends DefaultListCellRenderer {
-
-		@Override
-		public Component getListCellRendererComponent(JList list, Object value,
-				int index, boolean isSelected, boolean cellHasFocus) {
-			final JLabel label = (JLabel) super.getListCellRendererComponent(
-					list, value, index, isSelected, cellHasFocus);
-
-			if (value != null) {
-				label.setText(((JLabel) value).getText());
-				label.setIcon(((JLabel) value).getIcon());
-			}
-			if (isSelected) {
-				label.setForeground(getColorTextHover());
-			}
-			label.setOpaque(true);
-			this.setOpaque(true);
-			return label;
-		}
-
-	}
-
 	
-	public static final String FILE_SEPARATOR = System
-			.getProperty("file.separator");
-	public static final String CONFIG_FILE = "Config" + FILE_SEPARATOR
-			+ "config.properties";
+	public static final String FILE_SEPARATOR = System.getProperty("file.separator");
+	public static final String CONFIG_FILE = "Config" + FILE_SEPARATOR + "config.properties";
 	
 	public static final Logger logger;
 	public static final String LOG_FILE = "Log" + FILE_SEPARATOR + "LogFull.html";
-	private static final String OsName = System.getProperty("os.name")
-			.toLowerCase();
+	public static final String OsName = System.getProperty("os.name").toLowerCase();
 
 	private static ResourceBundle resourceBundle = null;
 
@@ -190,6 +164,11 @@ public class Utils {
 	public static boolean isWindows() {
 		return (OsName.indexOf("windows") >= 0);
 	}
+	
+    public static boolean isMac() {
+        return (OsName.indexOf("mac") >= 0);
+    }
+
 	
 	public static Locale[] supportedLocales = {
 	    Locale.ITALIAN,

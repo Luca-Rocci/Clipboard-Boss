@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project default="make-jar" name="Crea il jar per la distribuzione">
+
+	<property name="app-name" value="ClipboardBoss" />
+	<property name="bin-dir" value="../bin" />
+	<property name="jar-dir" value="../jar" />
+
+	<tstamp>
+		<format property='build-time' pattern='dd-MM-yyyy HH:mm:ss' />
+	</tstamp>
+
+	<path id="build.classpath">
+        <fileset dir="${user.home}/IzPack">
+            <include name="lib/*.jar" />
+        </fileset>
+    </path>
+            	
+    <taskdef name="izpack" classpathref="build.classpath" classname="com.izforge.izpack.ant.IzPackTask" />
+	
+	<target name="jar">
+		<buildnumber file="${app-name}.buildnumber" />
+		<jar basedir="${bin-dir}" destfile="${jar-dir}/${app-name}-${build.number}.jar">
+			<manifest>
+				<attribute name="Built-By" value="${user.name}" />
+				<attribute name="Built-On" value="${os.name}" />
+				<attribute name="Built-At" value="${build-time}" />
+				<attribute name="Build-Jdk" value="1.6" />
+				<section name="${method-name}" >
+					<attribute name="Implementation-Title" value="${app-name}" />
+					<attribute name="Implementation-Version" value="${build.number}" />
+					<attribute name="Implementation-Vendor" value="Luca Rocci" />
+				</section>
+                <attribute name="Main-Class" value="it.rocci.clipboss.MainApp"/>
+                <attribute name="Class-Path" value="."/>
+			</manifest>
+		</jar>
+	</target>
+
+	<target name="make-jar">
+		<antcall target="jar" />
+		<!-- copy file="${jar-dir}/${app-name}-${build.number}.jar" tofile="../${app-name}.jar"/ -->
+		<antcall target="install" />
+		
+	</target>
+ 
+    <target name="install">
+        <izpack input="installer.xml"
+                output="IzPack-install.jar"
+                installerType="standard"
+                inheritAll="true"
+                basedir="${basedir}"
+                izPackDir="${user.home}/IzPack/" />
+    </target>
+</project>

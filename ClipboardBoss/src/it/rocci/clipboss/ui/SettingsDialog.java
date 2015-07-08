@@ -1,11 +1,13 @@
 package it.rocci.clipboss.ui;
 
+import it.rocci.clipboss.MainApp;
 import it.rocci.clipboss.ui.component.Dialog;
 import it.rocci.clipboss.utils.Configuration;
 import it.rocci.clipboss.utils.Utils;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.Panel;
@@ -15,6 +17,8 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.io.File;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.Enumeration;
 import java.util.Locale;
 import java.util.logging.Level;
@@ -22,9 +26,11 @@ import java.util.logging.Level;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
+import javax.swing.DefaultListCellRenderer;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.JTextField;
@@ -88,6 +94,13 @@ public class SettingsDialog extends Dialog implements ActionListener {
 		} else if (e.getActionCommand().contains("settings.function.")) {
 			final JCheckBox chk = (JCheckBox) e.getSource();
 			Configuration.setString(e.getActionCommand(), String.valueOf(chk.isSelected()));
+			String path = MainApp.class.getProtectionDomain().getCodeSource().getLocation().getPath();
+			try {
+				String decodedPath = URLDecoder.decode(path, "UTF-8");
+			} catch (UnsupportedEncodingException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 		}
 	}
 
@@ -108,7 +121,7 @@ public class SettingsDialog extends Dialog implements ActionListener {
 		
 		JComboBox combo = new JComboBox();
 		combo.setPreferredSize(new Dimension(200, 26));
-		combo.setRenderer(new Utils.LabelListRenderer());
+		combo.setRenderer(new LabelListRenderer());
 
 		for (Locale l : Utils.supportedLocales) {
 			final JLabel themeItem = new JLabel(l.getDisplayLanguage(), Utils.getIcon(l.getLanguage() +".png"),SwingConstants.LEFT);
@@ -145,7 +158,7 @@ public class SettingsDialog extends Dialog implements ActionListener {
 		
 		JComboBox combo = new JComboBox();
 		combo.setPreferredSize(new Dimension(200, 26));
-		combo.setRenderer(new Utils.LabelListRenderer());
+		combo.setRenderer(new LabelListRenderer());
 		
 		File themeList = new File("Theme");
 		
@@ -223,5 +236,27 @@ public class SettingsDialog extends Dialog implements ActionListener {
 		theme.add(Box.createHorizontalGlue());
 		theme.add(spinner);
 		return theme;
+	}
+	
+	public static class LabelListRenderer extends DefaultListCellRenderer {
+
+		@Override
+		public Component getListCellRendererComponent(JList list, Object value,
+				int index, boolean isSelected, boolean cellHasFocus) {
+			final JLabel label = (JLabel) super.getListCellRendererComponent(
+					list, value, index, isSelected, cellHasFocus);
+
+			if (value != null) {
+				label.setText(((JLabel) value).getText());
+				label.setIcon(((JLabel) value).getIcon());
+			}
+			if (isSelected) {
+				label.setForeground(Utils.getColorTextHover());
+			}
+			label.setOpaque(true);
+			this.setOpaque(true);
+			return label;
+		}
+
 	}
 }
