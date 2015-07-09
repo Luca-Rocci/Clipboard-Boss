@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+
+<shortcuts>
+<skipIfNotSupported/>
+<defaultCurrentUser/>
+<programGroup defaultName="Clipboard Boss"
+            location="applications"/>
+<shortcut
+name="Clipboard Boss"
+target="$INSTALL_PATH\ClipboardBoss.jar"
+description="Launch Clipboard Boss"
+workingDirectory="$INSTALL_PATH"
+iconFile="$INSTALL_PATH\ClipboardBoss.ico"
+  initialState="normal"
+programGroup="yes"
+desktop="no"
+applications="no"
+startMenu="no"
+startup="yes">
+
+<createForPack name="Clipboard Boss Core"/>
+</shortcut>
+
+</shortcuts>

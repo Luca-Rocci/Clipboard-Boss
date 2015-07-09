@@ -1,77 +1,128 @@
 <?xml version="1.0" encoding="iso-8859-1" standalone="yes"?>
 
 <izpack:installation version="5.0"
-                     xmlns:izpack="http://izpack.org/schema/installation"
-                     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                     xsi:schemaLocation="http://izpack.org/schema/installation http://izpack.org/schema/5.0/izpack-installation-5.0.xsd">
- 
-  <info>
-    <appname>Clipboard Boss</appname>
-    <appversion>0.1</appversion>
-    <appsubpath>ClipboardBoss</appsubpath>
-    <javaversion>1.6</javaversion>
-    <requiresjdk>no</requiresjdk>
-    <authors>
-        <author email="" name="Luca Rocci"/>
-    </authors>
-    <url>https://github.com/Luca-Rocci/Clipboard-Boss</url>
-    <run-privileged condition="izpack.windowsinstall.vista|izpack.macinstall|izpack.windowsinstall.7|izpack.windowsinstall.8"/>
-    <summarylogfilepath>$INSTALL_PATH/Installation.htm</summarylogfilepath>
-  </info>
- 
-  <locale>
-        <langpack iso3="eng"/>
-        <langpack iso3="ita"/>
-        <langpack iso3="deu"/>
-        <langpack iso3="fra"/>
-  </locale>
- 
-  <guiprefs width="400" height="300" resizable="no">
+	xmlns:izpack="http://izpack.org/schema/installation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://izpack.org/schema/installation http://izpack.org/schema/5.0/izpack-installation-5.0.xsd">
 
-    <modifier key="useHeadingPanel" value="no" />
- 
-  </guiprefs>
- 
-  <panels>
-    <panel classname="TargetPanel"/>
-    <panel classname="PacksPanel"/>
-    <panel classname="InstallPanel"/>
-    <panel classname="SimpleFinishPanel"/>
-  </panels>
- 
-  <packs>
-    <pack name="Clipboard Boss Core" required="yes" id="core.lang" >
-      <description>The core files needed for the application</description>
-      <file src="C:\Users\Luca\git\Clipboard-Boss\ClipboardBoss\ClipboardBoss.jar" targetdir="${INSTALL_PATH}" override="true"/>
-      <file src="C:\Users\Luca\git\Clipboard-Boss\ClipboardBoss\ClipboardBoss.cmd" targetdir="${INSTALL_PATH}" override="true"/>
-        <fileset dir="C:\Users\Luca\git\Clipboard-Boss\ClipboardBoss\Config" targetdir="${INSTALL_PATH}/Config" override="true">
-    <include name="*.properties" />
-  </fileset>
-  <executable>
-    <fileset>
-      <include name="**/*.jar" />
-      <include name="**/*.cmd" />
-      <include name="**/*.exe" />
-      <include name="**/*.sh" />
-    </fileset>
-  </executable>
-    </pack>
-    <pack name="Languages" required="yes" id="pack.lang" >
-  <description>Language files</description>
-  <fileset dir="C:\Users\Luca\git\Clipboard-Boss\ClipboardBoss\Lang" targetdir="${INSTALL_PATH}/Lang" override="true">
-    <include name="*.properties" />
-  </fileset>
-      </pack>
-  <pack name="Theme Default" required="yes" id="pack.theme" >
-  <description>Theme Default files</description>
-  <fileset dir="C:\Users\Luca\git\Clipboard-Boss\ClipboardBoss\Theme\Simple Black" targetdir="${INSTALL_PATH}/Theme/Simple Black" override="true" />
-</pack>
-  <pack name="Theme Extra" required="no" preselected="true" id="pack.themex" >
-  <description>Theme Extra files</description>
-  <fileset dir="C:\Users\Luca\git\Clipboard-Boss\ClipboardBoss\Theme\Simple Color" targetdir="${INSTALL_PATH}/Theme/Simple Color" override="true" />
-</pack>
-  </packs>
-  
-  
- 
+	<info>
+		<appname>Clipboard Boss</appname>
+		<appversion>1.0</appversion>
+		<appsubpath>ClipboardBoss</appsubpath>
+		<javaversion>1.6</javaversion>
+		<requiresjdk>no</requiresjdk>
+		<authors>
+			<author email="" name="Luca Rocci" />
+		</authors>
+		<url>https://github.com/Luca-Rocci/Clipboard-Boss</url>
+		<!-- run-privileged condition="izpack.windowsinstall.vista|izpack.windowsinstall.7|izpack.windowsinstall.8|izpack.macinstall" / -->
+	</info>
+
+	<locale>
+		<langpack iso3="eng" />
+		<langpack iso3="ita" />
+		<langpack iso3="deu" />
+		<langpack iso3="fra" />
+	</locale>
+
+<guiprefs width="500" height="400" resizable="no">
+<!-- 
+  <modifier key="labelGap" value="2"/>
+  <modifier key="useHeadingPanel" value="yes"/>
+  <modifier key="headingImageOnLeft" value="yes"/>
+  <modifier key="headingLineCount" value="1"/>
+  <modifier key="headingFontSize" value="1.5"/>
+  <modifier key="headingBackgroundColor" value="0x00ffffff"/>
+  <modifier key="headingPanelCounter" value="text"/>
+  <modifier key="headingPanelCounterPos" value="inHeading"/>  -->
+</guiprefs>
+
+	<listeners>
+	    <listener classname="RegistryInstallerListener" stage="install" >
+	        <os family="windows"/>
+	    </listener>
+	    <listener classname="RegistryUninstallerListener" stage="uninstall" >
+	        <os family="windows"/>
+	    </listener>
+	</listeners>
+
+	<panels>
+		<panel classname="TargetPanel" />
+		<panel classname="InstallPanel" />
+		<panel classname="ShortcutPanel" />
+		<panel classname="SimpleFinishPanel" />
+	</panels>
+
+	<packs>
+		<pack name="Clipboard Boss Core" required="yes" id="core.lang">
+			<description>The core files needed for the application</description>
+			<file
+				src="C:\Users\Luca\git\Clipboard-Boss\ClipboardBoss\ClipboardBoss.jar"
+				targetdir="${INSTALL_PATH}" override="true" />
+			<file
+				src="C:\Users\Luca\git\Clipboard-Boss\ClipboardBoss\ClipboardBoss.ico"
+				targetdir="${INSTALL_PATH}" override="true" />
+			<file
+				src="C:\Users\Luca\git\Clipboard-Boss\ClipboardBoss\ClipboardBoss.png"
+				targetdir="${INSTALL_PATH}" override="true" />
+			<file
+				src="C:\Users\Luca\git\Clipboard-Boss\ClipboardBoss\ClipboardBoss.cmd"
+				targetdir="${INSTALL_PATH}" override="true" />
+			<fileset dir="C:\Users\Luca\git\Clipboard-Boss\ClipboardBoss\Config"
+				targetdir="${INSTALL_PATH}/Config" overrideRenameTo="*.old" override="true">
+				<include name="*.properties" />
+			</fileset>
+			<executable>
+				<fileset>
+					<include name="**/*.jar" />
+					<include name="**/*.cmd" />
+					<include name="**/*.exe" />
+					<include name="**/*.sh" />
+				</fileset>
+			</executable>
+		</pack>
+		<pack name="Language" required="yes" id="pack.lang">
+			<description>Language files</description>
+			<fileset dir="C:\Users\Luca\git\Clipboard-Boss\ClipboardBoss\Lang"
+				targetdir="${INSTALL_PATH}/Lang" override="true">
+				<include name="*.properties" />
+			</fileset>
+		</pack>
+		<pack name="Theme" required="yes" id="pack.theme">
+			<description>Theme files</description>
+			<fileset
+				dir="C:\Users\Luca\git\Clipboard-Boss\ClipboardBoss\Theme"
+				targetdir="${INSTALL_PATH}/Theme" override="true" />
+		</pack>
+	</packs>
+
+	<natives>
+	    <native type="izpack" name="ShellLink.dll"/>
+	    <native type="izpack" name="ShellLink_x64.dll"/>
+	    <native type="3rdparty" name="COIOSHelper.dll" stage="both">
+	       <os family="windows"/>
+	    </native>
+	    <native type="3rdparty" name="COIOSHelper_x64.dll" stage="both">
+	       <os family="windows"/>
+	    </native>
+	</natives>
+	
+	<resources>
+		<res src="shortcutSpec.xml" id="shortcutSpec.xml"/>
+		<res src="Unix_shortcutSpec.xml" id="Unix_shortcutSpec.xml"/>
+		<res src="C:\Users\Luca\git\Clipboard-Boss\ClipboardBoss\ClipboardBoss.png" id="installer.langsel.img"/>
+		<res src="C:\Users\Luca\git\Clipboard-Boss\ClipboardBoss\ClipboardBoss.png" id="JFrameIcon.png"/>
+		      <res src="C:\Users\Luca\git\Clipboard-Boss\ClipboardBoss\ClipboardBoss.png" id="ImgPacksPanel.img.5" />
+        <res src="C:\Users\Luca\git\Clipboard-Boss\ClipboardBoss\ClipboardBoss.png" id="Installer.image.0"/>
+        <res src="C:\Users\Luca\git\Clipboard-Boss\ClipboardBoss\ClipboardBoss.png" id="Installer.image.1"/>
+
+	</resources>
+	
+	<variables>
+		<variable name="app-version" value="1.0"/>
+		<variable name="released-on" value="09/07/2015"/>
+		<variable name="StartupShortcutCheckboxEnabled" value="true"/>
+		<variable name="TargetPanel.dir.windows" value="$USER_HOME/Clipboard Boss"/>
+		<variable name="TargetPanel.dir.unix" value="$USER_HOME/Clipboard Boss"/>
+ 		<variable name="DEFAULT_INSTALL_PATH" value="$USER_HOME/Clipboard Boss"/>
+	</variables> 
 </izpack:installation>

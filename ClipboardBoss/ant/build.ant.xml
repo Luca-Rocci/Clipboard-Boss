@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<project default="make-jar" name="Crea il jar per la distribuzione">
+<project default="make-full" name="Crea il jar per la distribuzione">
 
 	<property name="app-name" value="ClipboardBoss" />
 	<property name="bin-dir" value="../bin" />
@@ -17,7 +17,7 @@
             	
     <taskdef name="izpack" classpathref="build.classpath" classname="com.izforge.izpack.ant.IzPackTask" />
 	
-	<target name="jar">
+	<target name="make-jar">
 		<buildnumber file="${app-name}.buildnumber" />
 		<jar basedir="${bin-dir}" destfile="${jar-dir}/${app-name}-${build.number}.jar">
 			<manifest>
@@ -25,7 +25,7 @@
 				<attribute name="Built-On" value="${os.name}" />
 				<attribute name="Built-At" value="${build-time}" />
 				<attribute name="Build-Jdk" value="1.6" />
-				<section name="${method-name}" >
+				<section name="${app-name}" >
 					<attribute name="Implementation-Title" value="${app-name}" />
 					<attribute name="Implementation-Version" value="${build.number}" />
 					<attribute name="Implementation-Vendor" value="Luca Rocci" />
@@ -34,21 +34,46 @@
                 <attribute name="Class-Path" value="."/>
 			</manifest>
 		</jar>
+		<copy file="${jar-dir}/${app-name}-${build.number}.jar" tofile="../${app-name}.jar"/>
 	</target>
 
-	<target name="make-jar">
-		<antcall target="jar" />
-		<!-- copy file="${jar-dir}/${app-name}-${build.number}.jar" tofile="../${app-name}.jar"/ -->
-		<antcall target="install" />
-		
+	<target name="make-full">
+		<antcall target="make-jar" />
+		<antcall target="make-install" />
+		<antcall target="make-exe-no" />
+		<antcall target="make-exe-yes" />
 	</target>
  
-    <target name="install">
+    <target name="make-install">
         <izpack input="installer.xml"
-                output="IzPack-install.jar"
+                output="${app-name}-10.jar"
                 installerType="standard"
                 inheritAll="true"
                 basedir="${basedir}"
                 izPackDir="${user.home}/IzPack/" />
     </target>
+	
+	<target name="make-exe-no">
+        <exec executable="C:\Python34\python.exe" failonerror="true">
+            <arg line="${user.home}/IzPack/utils/wrappers/izpack2exe/izpack2exe.py"/>
+            <arg line="--file=${basedir}/${app-name}-10.jar"/>
+            <arg line="--output=${basedir}/${app-name}-10.exe"/>
+            <arg line="--with-upx=${user.home}/IzPack/utils/wrappers/izpack2exe/upx.exe"/>
+            <arg line="--with-7z=${user.home}/IzPack/utils/wrappers/izpack2exe/7za.exe"/>
+        	<arg line="--launch-file=${app-name}-install.jar"/>
+        	<arg line="--name=${app-name}"/>
+        </exec>
+    </target>
+	
+	<target name="make-exe-yes">
+        <exec executable="C:\Python34\python.exe" failonerror="true">
+            <arg line="${user.home}/IzPack/utils/wrappers/izpack2exe/izpack2exe.py"/>
+            <arg line="--file=${basedir}/${app-name}-10.jar"/>
+            <arg line="--output=${basedir}/${app-name}-java-install.exe"/>
+            <arg line="--with-upx=${user.home}/IzPack/utils/wrappers/izpack2exe/upx.exe"/>
+            <arg line="--with-7z=${user.home}/IzPack/utils/wrappers/izpack2exe/7za.exe"/>
+        	<arg line="--name=${app-name}"/>
+        </exec>
+    </target>
+	
 </project>
