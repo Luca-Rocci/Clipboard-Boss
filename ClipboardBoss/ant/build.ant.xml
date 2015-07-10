@@ -60,7 +60,7 @@
             <arg line="--output=${basedir}/${app-name}-10.exe"/>
             <arg line="--with-upx=${user.home}/IzPack/utils/wrappers/izpack2exe/upx.exe"/>
             <arg line="--with-7z=${user.home}/IzPack/utils/wrappers/izpack2exe/7za.exe"/>
-        	<arg line="--launch-file=${app-name}-install.jar"/>
+        	<arg line="--launch-file=${app-name}-10.jar"/>
         	<arg line="--name=${app-name}"/>
         </exec>
     </target>

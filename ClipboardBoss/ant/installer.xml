@@ -24,8 +24,9 @@
 		<langpack iso3="fra" />
 	</locale>
 
-<guiprefs width="500" height="400" resizable="no">
-<!-- 
+<guiprefs width="500" height="380" resizable="no">
+
+<!--
   <modifier key="labelGap" value="2"/>
   <modifier key="useHeadingPanel" value="yes"/>
   <modifier key="headingImageOnLeft" value="yes"/>
@@ -33,7 +34,7 @@
   <modifier key="headingFontSize" value="1.5"/>
   <modifier key="headingBackgroundColor" value="0x00ffffff"/>
   <modifier key="headingPanelCounter" value="text"/>
-  <modifier key="headingPanelCounterPos" value="inHeading"/>  -->
+  <modifier key="headingPanelCounterPos" value="inHeading"/>   -->
 </guiprefs>
 
 	<listeners>
@@ -46,6 +47,7 @@
 	</listeners>
 
 	<panels>
+		<panel classname="HTMLLicencePanel" />
 		<panel classname="TargetPanel" />
 		<panel classname="InstallPanel" />
 		<panel classname="ShortcutPanel" />
@@ -109,12 +111,10 @@
 	<resources>
 		<res src="shortcutSpec.xml" id="shortcutSpec.xml"/>
 		<res src="Unix_shortcutSpec.xml" id="Unix_shortcutSpec.xml"/>
-		<res src="C:\Users\Luca\git\Clipboard-Boss\ClipboardBoss\ClipboardBoss.png" id="installer.langsel.img"/>
-		<res src="C:\Users\Luca\git\Clipboard-Boss\ClipboardBoss\ClipboardBoss.png" id="JFrameIcon.png"/>
-		      <res src="C:\Users\Luca\git\Clipboard-Boss\ClipboardBoss\ClipboardBoss.png" id="ImgPacksPanel.img.5" />
-        <res src="C:\Users\Luca\git\Clipboard-Boss\ClipboardBoss\ClipboardBoss.png" id="Installer.image.0"/>
-        <res src="C:\Users\Luca\git\Clipboard-Boss\ClipboardBoss\ClipboardBoss.png" id="Installer.image.1"/>
-
+		<res src="C:\Users\Luca\git\Clipboard-Boss\ClipboardBoss\Installer.langsel.png" id="installer.langsel.img"/>
+        <res src="C:\Users\Luca\git\Clipboard-Boss\ClipboardBoss\Installer.image.png" id="Installer.image.0"/>
+		<res src="C:\Users\Luca\git\Clipboard-Boss\ClipboardBoss\Installer.image.png" id="Installer.image"/>
+		<res src="C:\Users\Luca\git\Clipboard-Boss\ClipboardBoss\GNU General Public License v3.0.html" id="HTMLLicencePanel.licence" />
 	</resources>
 	
 	<variables>
