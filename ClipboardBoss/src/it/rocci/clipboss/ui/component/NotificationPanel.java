@@ -49,7 +49,13 @@ public class NotificationPanel extends JDialog {
 	}
 
 	public void setVisible(MouseEvent e) {
-		Point pos = e.getLocationOnScreen();
+		Point pos;
+		if (e == null) {
+			pos = new Point(20,20);
+		} else {
+			pos = e.getLocationOnScreen();
+		}
+
         Rectangle screen = getScreenBoundsAt(pos);
 
         if (pos.x + getWidth() > screen.x + screen.width) {

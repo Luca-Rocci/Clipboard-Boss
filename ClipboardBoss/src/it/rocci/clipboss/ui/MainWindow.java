@@ -94,8 +94,11 @@ public class MainWindow extends JFrame {
 		btnMinimize.addMouseListener(new MouseAdapter()  
 		{  
 		    public void mouseClicked(MouseEvent e)  
-		    {  
+		    {  if (Utils.isMac()) {
+		    	setState(ICONIFIED);
+			} else { 
 		    	setVisible(false);
+			}
 		    }  
 		}); 
 		

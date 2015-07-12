@@ -8,7 +8,7 @@
 <shortcut
 name="Clipboard Boss"
 target="/usr/bin/java"
-commandLine="-jar $INSTALL_PATH/ClipboardBoss.jar"
+commandLine="-Djava.security.policy=.java.policy -jar $INSTALL_PATH/ClipboardBoss.jar"
 description="Launch Clipboard Boss"
 iconFile="$INSTALL_PATH/ClipboardBoss.png"
 workingDirectory="$INSTALL_PATH"

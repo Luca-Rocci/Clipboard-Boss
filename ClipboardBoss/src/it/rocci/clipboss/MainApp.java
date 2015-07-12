@@ -1,18 +1,13 @@
 package it.rocci.clipboss;
 
 import it.rocci.clipboss.model.ClipboardItem;
-import it.rocci.clipboss.ui.AboutDialog;
 import it.rocci.clipboss.ui.MainWindow;
 import it.rocci.clipboss.ui.MiniWindow;
-import it.rocci.clipboss.ui.SettingsDialog;
 import it.rocci.clipboss.ui.component.NotificationPanel;
-import it.rocci.clipboss.utils.Configuration;
 import it.rocci.clipboss.utils.Utils;
 
 import java.awt.AWTException;
 import java.awt.Image;
-import java.awt.MenuItem;
-import java.awt.PopupMenu;
 import java.awt.SystemTray;
 import java.awt.Toolkit;
 import java.awt.TrayIcon;
@@ -21,19 +16,12 @@ import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.FlavorEvent;
 import java.awt.datatransfer.FlavorListener;
 import java.awt.datatransfer.Transferable;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.util.Date;
 import java.util.logging.Level;
 
-import javax.swing.JDialog;
 import javax.swing.JFrame;
-import javax.swing.UIManager;
-import javax.swing.UIManager.LookAndFeelInfo;
 
 public class MainApp {
 
@@ -81,10 +69,13 @@ public class MainApp {
 			tray.add(trayIcon);
 		} catch (AWTException ex) {
 			Utils.logger.log(Level.WARNING, "Unable to add system tray ");
-			miniWindow.setVisible(true);
+			mainWindow.setVisible(true);
+			mainWindow.setState(mainWindow.ICONIFIED);
 		}
 
-
+		mainWindow.setVisible(true);
+		mainWindow.setState(mainWindow.ICONIFIED);
+		
 		Toolkit.getDefaultToolkit().getSystemClipboard().addFlavorListener(new FlavorListener() { 
 			@Override 
 			public void flavorsChanged(FlavorEvent e) {
