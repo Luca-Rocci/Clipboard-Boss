@@ -28,11 +28,9 @@ public class AboutDialog extends Dialog {
 
 		String aText = "<center>"
                 + "<h1>Clipboard Boss</h1>\n"
-                + "Version: Beta 1.0\n"
-                + "<hr />"
-                + "<p>Developed by: Cyborg85 from fishcode.eu</p>"
-                + "<hr />"
-                + "<p>(c) Copyright fishcode.eu Summer 2015</p>"
+                + "<h2>Version: Beta 1.0  Developed by: Luca Rocci</h2>\n"
+                + "<p>This software is free, you can redistribute it under the terms of the GNU General Public License</p>\n"
+                + "<p>Copyright (C) 2015 Luca Rocci</p>"
                 + "</center>";
         JEditorPane aboutText = new JEditorPane(new HTMLEditorKit().getContentType(), aText);
         aboutText.setContentType("text/html");

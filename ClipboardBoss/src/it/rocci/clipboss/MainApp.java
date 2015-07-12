@@ -79,9 +79,9 @@ public class MainApp {
 
 		try {
 			tray.add(trayIcon);
-			mainWindow.setVisible(false);
 		} catch (AWTException ex) {
 			Utils.logger.log(Level.WARNING, "Unable to add system tray ");
+			miniWindow.setVisible(true);
 		}
 
 
