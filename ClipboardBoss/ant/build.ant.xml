@@ -42,6 +42,7 @@
 		<antcall target="make-install" />
 		<antcall target="make-exe-no" />
 		<antcall target="make-exe-yes" />
+		<antcall target="make-app" />
 	</target>
  
     <target name="make-install">
@@ -53,12 +54,20 @@
                 izPackDir="${user.home}/IzPack/" />
     </target>
 	
+	<target name="make-app">
+        <exec executable="C:\Python34\python.exe" failonerror="true">
+            <arg line="${user.home}/IzPack/utils/wrappers/izpack2app/izpack2app.py"/>
+            <arg line="${basedir}/${app-name}-10.jar"/>
+            <arg line="${basedir}/${app-name}.app"/>
+        </exec>
+    </target>
+		
 	<target name="make-exe-no">
         <exec executable="C:\Python34\python.exe" failonerror="true">
             <arg line="${user.home}/IzPack/utils/wrappers/izpack2exe/izpack2exe.py"/>
             <arg line="--file=${basedir}/${app-name}-10.jar"/>
             <arg line="--output=${basedir}/${app-name}-10.exe"/>
-            <arg line="--with-upx=${user.home}/IzPack/utils/wrappers/izpack2exe/upx.exe"/>
+        	<arg line="--no-upx"/>
             <arg line="--with-7z=${user.home}/IzPack/utils/wrappers/izpack2exe/7za.exe"/>
         	<arg line="--launch-file=${app-name}-10.jar"/>
         	<arg line="--name=${app-name}"/>
