@@ -74,6 +74,7 @@ header h1 {
   line-height: 1.2;
   color: #303030;
   letter-spacing: -1px;
+  background: transparent url(../images/clipboard-boss.png) 50% 0 no-repeat;
 }
 
 header h2 {
