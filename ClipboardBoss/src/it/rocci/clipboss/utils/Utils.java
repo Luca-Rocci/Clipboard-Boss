@@ -177,4 +177,6 @@ public class Utils {
 		    Locale.GERMAN
 		};
 
+	public static String[] supportedPositions = { "Auto","TopRight", "TopLeft", "BottomRight", "BottomLeft" };
+	
 }

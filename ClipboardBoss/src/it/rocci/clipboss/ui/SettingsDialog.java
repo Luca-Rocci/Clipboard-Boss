@@ -74,7 +74,7 @@ public class SettingsDialog extends Dialog implements ActionListener {
 		panelFunc.add(getBooleanSettings("settings.function.autorun"));
 		panelFunc.add(getBooleanSettings("settings.function.minimizze"));
 		panelFunc.add(getNumberSettings("settings.function.maxitem")); 
-		
+		panelFunc.add(getPositionSettings("settings.function.position")); 
 		panelCenter.add(panelUI);
 		panelCenter.add(panelFunc);
 		panelCenter.add(Box.createVerticalGlue());
@@ -128,6 +128,43 @@ public class SettingsDialog extends Dialog implements ActionListener {
 			themeItem.setToolTipText(l.getLanguage());
 			combo.addItem(themeItem);
 					if (value.equals(l.getLanguage())) {
+						combo.setSelectedItem(themeItem);
+					}
+		}
+
+		combo.addActionListener(this);
+		combo.setActionCommand(key);
+		
+		locale.add(label);
+		locale.add(Box.createHorizontalGlue());
+		locale.add(combo);
+		return locale;
+	}
+	
+	private JPanel getPositionSettings(String key) {
+		String value = Configuration.getString(key);
+
+		JPanel locale = new JPanel();
+		locale.setLayout(new BoxLayout(locale, BoxLayout.LINE_AXIS));
+		locale.setBorder(BorderFactory.createEmptyBorder(2, 5, 5, 5));
+		locale.setPreferredSize(new Dimension(500, 30));
+		locale.setMaximumSize(new Dimension(1000,30));
+		locale.setMinimumSize(new Dimension(200,30));
+		locale.setOpaque(false);
+
+		JLabel label = new JLabel(Utils.getLabel(key));
+		label.setPreferredSize(new Dimension(200, 26));
+		label.setOpaque(false);
+		
+		JComboBox combo = new JComboBox();
+		combo.setPreferredSize(new Dimension(200, 26));
+		combo.setRenderer(new LabelListRenderer());
+
+		for (String p : Utils.supportedPositions) {
+			final JLabel themeItem = new JLabel(Utils.getLabel(key+ "." +p),SwingConstants.LEFT);
+			themeItem.setToolTipText(p);
+			combo.addItem(themeItem);
+					if (value.equals(p)) {
 						combo.setSelectedItem(themeItem);
 					}
 		}

@@ -123,6 +123,7 @@
 		<variable name="StartupShortcutCheckboxEnabled" value="true"/>
 		<variable name="TargetPanel.dir.windows" value="$USER_HOME/Clipboard Boss"/>
 		<variable name="TargetPanel.dir.unix" value="$USER_HOME/Clipboard Boss"/>
- 		<variable name="DEFAULT_INSTALL_PATH" value="$USER_HOME/Clipboard Boss"/>
+		<!-- TargetPanel.dir.macosx
+ 		<variable name="DEFAULT_INSTALL_PATH" value="$USER_HOME/Clipboard Boss"/> -->
 	</variables> 
 </izpack:installation>

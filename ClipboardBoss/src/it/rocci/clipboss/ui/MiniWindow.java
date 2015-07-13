@@ -46,6 +46,9 @@ public class MiniWindow extends NotificationPanel {
 		    	setVisible(false);
 		    }  
 		}); 
+		if (Utils.isMac()) {
+			btnMinimize.setVisible(false);
+		}
 		
 		Button btnMassimize= new Button();
 		btnMassimize.setToolTipText(Utils.getLabel("massimize"));
@@ -54,7 +57,9 @@ public class MiniWindow extends NotificationPanel {
 		{  
 		    public void mouseClicked(MouseEvent e)  
 		    {  
-		    	setVisible(false);
+		    	if (!Utils.isMac()) {
+		    		setVisible(false);
+		    	}
 		    	main.setVisible(true);
 		    }  
 		}); 
