@@ -50,7 +50,7 @@
 		<panel classname="HTMLLicencePanel" />
 		<panel classname="TargetPanel" />
 		<panel classname="InstallPanel" />
-		<panel classname="ShortcutPanel" />
+		<panel classname="ShortcutPanel" condition="showShortCutPanel" />
 		<panel classname="SimpleFinishPanel" />
 	</panels>
 
@@ -58,18 +58,18 @@
 		<pack name="Clipboard Boss Core" required="yes" id="core.lang">
 			<description>The core files needed for the application</description>
 			<file
-				src="C:\Users\Luca\git\Clipboard-Boss\ClipboardBoss\ClipboardBoss.jar"
+				src="..\ClipboardBoss.jar"
 				targetdir="${INSTALL_PATH}" override="true" />
 			<file
-				src="C:\Users\Luca\git\Clipboard-Boss\ClipboardBoss\ClipboardBoss.ico"
+				src="..\ClipboardBoss.ico"
 				targetdir="${INSTALL_PATH}" override="true" />
 			<file
-				src="C:\Users\Luca\git\Clipboard-Boss\ClipboardBoss\ClipboardBoss.png"
+				src="..\ClipboardBoss.png"
 				targetdir="${INSTALL_PATH}" override="true" />
 			<file
-				src="C:\Users\Luca\git\Clipboard-Boss\ClipboardBoss\ClipboardBoss.cmd"
-				targetdir="${INSTALL_PATH}" override="true" />
-			<fileset dir="C:\Users\Luca\git\Clipboard-Boss\ClipboardBoss\Config"
+				src="..\Log\LogInfo.html"
+				targetdir="${INSTALL_PATH}\Log" override="true" />
+			<fileset dir="..\Config"
 				targetdir="${INSTALL_PATH}/Config" overrideRenameTo="*.old" override="true">
 				<include name="*.properties" />
 			</fileset>
@@ -84,7 +84,7 @@
 		</pack>
 		<pack name="Language" required="yes" id="pack.lang">
 			<description>Language files</description>
-			<fileset dir="C:\Users\Luca\git\Clipboard-Boss\ClipboardBoss\Lang"
+			<fileset dir="..\Lang"
 				targetdir="${INSTALL_PATH}/Lang" override="true">
 				<include name="*.properties" />
 			</fileset>
@@ -92,7 +92,7 @@
 		<pack name="Theme" required="yes" id="pack.theme">
 			<description>Theme files</description>
 			<fileset
-				dir="C:\Users\Luca\git\Clipboard-Boss\ClipboardBoss\Theme"
+				dir="..\Theme"
 				targetdir="${INSTALL_PATH}/Theme" override="true" />
 		</pack>
 	</packs>
@@ -111,10 +111,10 @@
 	<resources>
 		<res src="shortcutSpec.xml" id="shortcutSpec.xml"/>
 		<res src="Unix_shortcutSpec.xml" id="Unix_shortcutSpec.xml"/>
-		<res src="C:\Users\Luca\git\Clipboard-Boss\ClipboardBoss\Installer.langsel.png" id="installer.langsel.img"/>
-        <res src="C:\Users\Luca\git\Clipboard-Boss\ClipboardBoss\Installer.image.png" id="Installer.image.0"/>
-		<res src="C:\Users\Luca\git\Clipboard-Boss\ClipboardBoss\Installer.image.png" id="Installer.image"/>
-		<res src="C:\Users\Luca\git\Clipboard-Boss\ClipboardBoss\GNU General Public License v3.0.html" id="HTMLLicencePanel.licence" />
+		<res src="Installer.langsel.png" id="installer.langsel.img"/>
+        <res src="Installer.image.png" id="Installer.image.0"/>
+		<res src="Installer.image.png" id="Installer.image"/>
+		<res src="..\GNU General Public License v3.0.html" id="HTMLLicencePanel.licence" />
 	</resources>
 	
 	<variables>
@@ -123,7 +123,18 @@
 		<variable name="StartupShortcutCheckboxEnabled" value="true"/>
 		<variable name="TargetPanel.dir.windows" value="$USER_HOME/Clipboard Boss"/>
 		<variable name="TargetPanel.dir.unix" value="$USER_HOME/Clipboard Boss"/>
-		<!-- TargetPanel.dir.macosx
+		<!-- TargetPanel.dir.macosx /Applications/CLIENT_NAME.app
  		<variable name="DEFAULT_INSTALL_PATH" value="$USER_HOME/Clipboard Boss"/> -->
 	</variables> 
+	
+	<conditions>
+		<condition type="java" id="showShortCutPanel">
+			<java>
+				<class>com.izforge.izpack.util.OsVersion</class>
+				<field>IS_OSX</field>
+			</java>
+			<returnvalue type="boolean">false</returnvalue>
+		</condition>
+	</conditions>
+	
 </izpack:installation>

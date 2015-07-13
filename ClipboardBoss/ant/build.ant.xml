@@ -40,14 +40,13 @@
 	<target name="make-full">
 		<antcall target="make-jar" />
 		<antcall target="make-install" />
-		<antcall target="make-exe-no" />
-		<antcall target="make-exe-yes" />
+		<antcall target="make-exe" />
 		<antcall target="make-app" />
 	</target>
  
     <target name="make-install">
         <izpack input="installer.xml"
-                output="${app-name}-10.jar"
+                output="${basedir}/installer/${app-name}-uni.jar"
                 installerType="standard"
                 inheritAll="true"
                 basedir="${basedir}"
@@ -56,20 +55,20 @@
 	
 	<target name="make-app">
         <exec executable="C:\Python34\python.exe" failonerror="true">
-            <arg line="${user.home}/IzPack/utils/wrappers/izpack2app/izpack2app.py"/>
-            <arg line="${basedir}/${app-name}-10.jar"/>
-            <arg line="${basedir}/${app-name}.app"/>
+            <arg line="${user.home}\IzPack\utils\wrappers\izpack2app\izpack2app2.py"/>
+            <arg line="${basedir}\installer\${app-name}-uni.jar"/>
+            <arg line="${basedir}\installer\${app-name}-macosx.app"/>
         </exec>
     </target>
 		
-	<target name="make-exe-no">
+	<target name="make-exe">
         <exec executable="C:\Python34\python.exe" failonerror="true">
             <arg line="${user.home}/IzPack/utils/wrappers/izpack2exe/izpack2exe.py"/>
-            <arg line="--file=${basedir}/${app-name}-10.jar"/>
-            <arg line="--output=${basedir}/${app-name}-10.exe"/>
+            <arg line="--file=${basedir}/installer/${app-name}-uni.jar"/>
+            <arg line="--output=${basedir}/installer/${app-name}-win.exe"/>
         	<arg line="--no-upx"/>
             <arg line="--with-7z=${user.home}/IzPack/utils/wrappers/izpack2exe/7za.exe"/>
-        	<arg line="--launch-file=${app-name}-10.jar"/>
+        	<arg line="--launch-file=${app-name}-uni.jar"/>
         	<arg line="--name=${app-name}"/>
         </exec>
     </target>
