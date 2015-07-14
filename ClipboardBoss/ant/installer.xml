@@ -50,9 +50,10 @@
 		<panel classname="HTMLLicencePanel" />
 		<panel classname="TargetPanel" />
 		<panel classname="InstallPanel" />
-		<panel classname="ShortcutPanel" condition="showShortCutPanel" />
+		<panel classname="ShortcutPanel" condition="showStandardPanel" />
+		<panel classname="it.rocci.izpack.panels.ShortcutPanel" condition="showShortcutPanel" id="customShortcutPanel" jar="lib/IzPackCustomPanels.jar" />
 		<panel classname="SimpleFinishPanel" />
-	</panels>
+	</panels>$USER_HOME
 
 	<packs>
 		<pack name="Clipboard Boss Core" required="yes" id="core.lang">
@@ -120,15 +121,20 @@
 	<variables>
 		<variable name="app-version" value="1.0"/>
 		<variable name="released-on" value="09/07/2015"/>
+		<variable name="StandardPanel" value="hide"/>
 		<variable name="StartupShortcutCheckboxEnabled" value="true"/>
-		<variable name="TargetPanel.dir.windows" value="$USER_HOME/Clipboard Boss"/>
-		<variable name="TargetPanel.dir.unix" value="$USER_HOME/Clipboard Boss"/>
-		<!-- TargetPanel.dir.macosx /Applications/CLIENT_NAME.app
- 		<variable name="DEFAULT_INSTALL_PATH" value="$USER_HOME/Clipboard Boss"/> -->
+		<variable name="TargetPanel.dir.windows" value="$USER_HOME\ClipboardBoss"/>
+		<variable name="TargetPanel.dir.unix" value="$USER_HOME/ClipboardBoss"/>
+		<variable name="TargetPanel.dir.macosx" value="/Applications/ClipboardBoss.app"/>
+ 		<!-- variable name="DEFAULT_INSTALL_PATH" value="$USER_HOME/Clipboard Boss"/> -->
 	</variables> 
 	
 	<conditions>
-		<condition type="java" id="showShortCutPanel">
+		<condition type="variable" id="showStandardPanel">
+			<name>StandardPanel</name>
+			<value>visible</value>
+		</condition>
+		<condition type="java" id="showShortcutPanel">
 			<java>
 				<class>com.izforge.izpack.util.OsVersion</class>
 				<field>IS_OSX</field>
