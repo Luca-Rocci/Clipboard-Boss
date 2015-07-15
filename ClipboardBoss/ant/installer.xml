@@ -24,7 +24,7 @@
 		<langpack iso3="fra" />
 	</locale>
 
-<guiprefs width="500" height="380" resizable="no">
+<guiprefs width="500" height="390" resizable="no">
 
 <!--
   <modifier key="labelGap" value="2"/>
@@ -53,27 +53,88 @@
 		<panel classname="ShortcutPanel" condition="showStandardPanel" />
 		<panel classname="it.rocci.izpack.panels.ShortcutPanel" condition="showShortcutPanel" id="customShortcutPanel" jar="lib/IzPackCustomPanels.jar" />
 		<panel classname="SimpleFinishPanel" />
-	</panels>$USER_HOME
+	</panels>
 
 	<packs>
-		<pack name="Clipboard Boss Core" required="yes" id="core.lang">
+		<pack name="Clipboard Boss Core" required="yes" id="pack.core" >
 			<description>The core files needed for the application</description>
-			<file
+			<!-- windows -->
+			<file 
 				src="..\ClipboardBoss.jar"
-				targetdir="${INSTALL_PATH}" override="true" />
+				targetdir="${INSTALL_PATH}" override="true" >
+				 <os family="windows"/>
+			</file>
 			<file
 				src="..\ClipboardBoss.ico"
-				targetdir="${INSTALL_PATH}" override="true" />
+				targetdir="${INSTALL_PATH}" override="true" >
+				 <os family="windows"/>
+			</file>
+			<file 
+				src="..\.java.policy"
+				targetdir="${INSTALL_PATH}" override="true" >
+				 <os family="windows"/>
+			</file>
+			<file 
+				src="..\License.html"
+				targetdir="${INSTALL_PATH}" override="true" >
+				 <os family="windows"/>
+			</file>
+			
+			<!-- linux -->
+			<file 
+				src="..\ClipboardBoss.jar"
+				targetdir="${INSTALL_PATH}" override="true" >
+				 <os family="unix"/>
+			</file>
 			<file
 				src="..\ClipboardBoss.png"
-				targetdir="${INSTALL_PATH}" override="true" />
-			<file
-				src="..\Log\LogInfo.html"
-				targetdir="${INSTALL_PATH}\Log" override="true" />
-			<fileset dir="..\Config"
-				targetdir="${INSTALL_PATH}/Config" overrideRenameTo="*.old" override="true">
-				<include name="*.properties" />
-			</fileset>
+				targetdir="${INSTALL_PATH}" override="true" >
+				 <os family="unix"/>
+			</file>
+			<file 
+				src="..\.java.policy"
+				targetdir="${INSTALL_PATH}" override="true" >
+				 <os family="unix"/>
+			</file>
+			<file 
+				src="..\License.html"
+				targetdir="${INSTALL_PATH}" override="true" >
+				 <os family="unix"/>
+			</file>
+			
+			<!-- mac os x -->
+			<file 
+				src="..\ClipboardBoss.jar"
+				targetdir="${INSTALL_PATH}/Contents/Resources/Java" override="true" >
+				 <os family="mac"/>
+			</file>
+			<file 
+				src="..\ClipboardBoss.icns"
+				targetdir="${INSTALL_PATH}/Contents/Resources" override="true" >
+				 <os family="mac"/>
+			</file>
+			<file 
+				src="..\.java.policy"
+				targetdir="${INSTALL_PATH}/Contents/Resources/Java" override="true" >
+				 <os family="mac"/>
+			</file>
+			<file 
+				src="..\License.html"
+				targetdir="${INSTALL_PATH}/Contents/Resources/Java" override="true" >
+				 <os family="mac"/>
+			</file>
+			<file 
+				src="..\PkgInfo"
+				targetdir="${INSTALL_PATH}/Contents" override="true" >
+				 <os family="mac"/>
+			</file>
+			<file 
+				src="..\Info.plist"
+				targetdir="${INSTALL_PATH}/Contents" override="true" >
+				 <os family="mac"/>
+			</file>
+			
+			<!-- All -->
 			<executable>
 				<fileset>
 					<include name="**/*.jar" />
@@ -83,18 +144,61 @@
 				</fileset>
 			</executable>
 		</pack>
+		<pack name="Config" required="yes" id="pack.conf">
+			<description>Configuration files</description>
+			<file
+				src="..\Config\config.properties"
+				targetdir="${INSTALL_PATH}\Config" override="true" overrideRenameTo="*.old">
+				 <os family="windows"/>
+				 <os family="unix"/>
+			</file>
+			<file
+				src="..\Config\config.properties"
+				targetdir="${INSTALL_PATH}/Contents/Resources/Java/Config" override="true" overrideRenameTo="*.old">
+				 <os family="mac"/>
+			</file>
+		</pack>
+		<pack name="Log" required="yes" id="pack.log">
+			<description>Log files</description>
+			<file
+				src="..\Log\LogInfo.html"
+				targetdir="${INSTALL_PATH}\Log" override="true" >
+				 <os family="windows"/>
+				 <os family="unix"/>
+			</file>
+			<file
+				src="..\Log\LogInfo.html"
+				targetdir="${INSTALL_PATH}/Contents/Resources/Java/Log" override="true" >
+				 <os family="mac"/>
+			</file>
+		</pack>
+
 		<pack name="Language" required="yes" id="pack.lang">
 			<description>Language files</description>
 			<fileset dir="..\Lang"
 				targetdir="${INSTALL_PATH}/Lang" override="true">
 				<include name="*.properties" />
+				 <os family="windows"/>
+				 <os family="unix"/>
+			</fileset>
+			<fileset dir="..\Lang"
+				targetdir="${INSTALL_PATH}/Contents/Resources/Java/Lang" override="true">
+				<include name="*.properties" />
+				<os family="mac"/>
 			</fileset>
 		</pack>
 		<pack name="Theme" required="yes" id="pack.theme">
 			<description>Theme files</description>
-			<fileset
-				dir="..\Theme"
-				targetdir="${INSTALL_PATH}/Theme" override="true" />
+
+			<fileset dir="..\Theme"
+				targetdir="${INSTALL_PATH}/Theme" override="true">
+				 <os family="windows"/>
+				 <os family="unix"/>
+			</fileset>
+			<fileset dir="..\Theme"
+				targetdir="${INSTALL_PATH}/Contents/Resources/Java/Theme" override="true">
+				<os family="mac"/>
+			</fileset>
 		</pack>
 	</packs>
 
@@ -115,12 +219,12 @@
 		<res src="Installer.langsel.png" id="installer.langsel.img"/>
         <res src="Installer.image.png" id="Installer.image.0"/>
 		<res src="Installer.image.png" id="Installer.image"/>
-		<res src="..\GNU General Public License v3.0.html" id="HTMLLicencePanel.licence" />
+		<res src="..\License.html" id="HTMLLicencePanel.licence" />
 	</resources>
 	
 	<variables>
 		<variable name="app-version" value="1.0"/>
-		<variable name="released-on" value="09/07/2015"/>
+		<variable name="released-on" value="15/07/2015"/>
 		<variable name="StandardPanel" value="hide"/>
 		<variable name="StartupShortcutCheckboxEnabled" value="true"/>
 		<variable name="TargetPanel.dir.windows" value="$USER_HOME\ClipboardBoss"/>

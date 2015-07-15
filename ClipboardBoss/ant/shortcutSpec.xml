@@ -7,7 +7,8 @@
             location="applications"/>
 <shortcut
 name="Clipboard Boss"
-target="$INSTALL_PATH\ClipboardBoss.jar"
+target="javaw.exe"
+commandLine="-Djava.security.policy=.java.policy -jar $INSTALL_PATH\ClipboardBoss.jar"
 description="Launch Clipboard Boss"
 workingDirectory="$INSTALL_PATH"
 iconFile="$INSTALL_PATH\ClipboardBoss.ico"
