@@ -72,18 +72,16 @@ public class MainApp {
 			mainWindow.setVisible(true);
 			mainWindow.setState(mainWindow.ICONIFIED);
 		}
-
-		mainWindow.setVisible(true);
-		mainWindow.setState(mainWindow.ICONIFIED);
 		
 		Toolkit.getDefaultToolkit().getSystemClipboard().addFlavorListener(new FlavorListener() { 
+			@SuppressWarnings("unchecked")
 			@Override 
 			public void flavorsChanged(FlavorEvent e) {
 				Utils.logger.log(Level.INFO, "Clipboard updated: " + e.getSource() + " " + e.toString());
 
 				try {                
-					Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
-
+					Clipboard clipboard = (Clipboard) e.getSource(); //Toolkit.getDefaultToolkit().getSystemClipboard();
+System.out.println(e.getSource());
 					Transferable content = clipboard.getContents(this);
 					if (content == null) return;
 
@@ -96,6 +94,7 @@ public class MainApp {
 						Object o = clipboard.getData(DataFlavor.imageFlavor);                        
 						mainWindow.getModel().addElement(new ClipboardItem(1,o,new Date()));
 					}   
+					
 					//trayIcon.displayMessage(Utils.getLabel("title"), Utils.getLabel("message"), TrayIcon.MessageType.INFO);
 				}    
 				catch (Exception ex) {
