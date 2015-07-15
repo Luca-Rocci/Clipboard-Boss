@@ -7,6 +7,7 @@ import it.rocci.clipboss.ui.component.NotificationPanel;
 import it.rocci.clipboss.utils.Utils;
 
 import java.awt.AWTException;
+import java.awt.EventQueue;
 import java.awt.Image;
 import java.awt.SystemTray;
 import java.awt.Toolkit;
@@ -22,6 +23,8 @@ import java.util.Date;
 import java.util.logging.Level;
 
 import javax.swing.JFrame;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 
 public class MainApp {
 
@@ -73,6 +76,7 @@ public class MainApp {
 			mainWindow.setState(mainWindow.ICONIFIED);
 		}
 		
+		
 		Toolkit.getDefaultToolkit().getSystemClipboard().addFlavorListener(new FlavorListener() { 
 			@SuppressWarnings("unchecked")
 			@Override 
@@ -82,7 +86,7 @@ public class MainApp {
 				try {                
 					Clipboard clipboard = (Clipboard) e.getSource(); //Toolkit.getDefaultToolkit().getSystemClipboard();
 System.out.println(e.getSource());
-					Transferable content = clipboard.getContents(this);
+					Transferable content = clipboard.getContents(null);
 					if (content == null) return;
 
 					if(content.isDataFlavorSupported(DataFlavor.stringFlavor)) {
@@ -103,12 +107,23 @@ System.out.println(e.getSource());
 			} 
 			
 		}); 
+
 	}
 
 
 	public static void main(String[] args) {
+		 EventQueue.invokeLater(new Runnable() {
+	            @Override
+	            public void run() {
+	                try {
+	                    UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+	                } catch (Exception ex) {
+	                	Utils.logger.log(Level.SEVERE, "UI Manager", ex);
+	                }
 		new MainApp();
 		NotificationPanel.showMessage(Utils.getLabel("start"), 2500);
+	            }
+	});
 	}
 
 }
