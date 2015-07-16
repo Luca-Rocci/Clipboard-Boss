@@ -1,9 +1,13 @@
 package it.rocci.clipboss.utils;
 
+
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
 import java.awt.FontFormatException;
+import java.awt.Graphics2D;
+import java.awt.Image;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -178,5 +182,28 @@ public class Utils {
 		};
 
 	public static String[] supportedPositions = { "Auto","TopRight", "TopLeft", "BottomRight", "BottomLeft" };
+	
+	 static boolean bufferedImageEquals( BufferedImage b1, BufferedImage b2 ) {
+		    if ( b1 == b2 ) {return true;} // true if both are null
+		    if ( b1 == null || b2 == null ) { return false; }
+		    if ( b1.getWidth() != b2.getWidth() ) { return false; }
+		    if ( b1.getHeight() != b2.getHeight() ) { return false; }
+		    for ( int i = 0; i < b1.getWidth(); i++) {
+		     for ( int j = 0; j < b1.getHeight(); j++ ) {
+		       if ( b1.getRGB(i,j) != b2.getRGB(i,j) ) { 
+		           return false;
+		       }
+		      }
+		    }
+		    return true;
+		  }
+	 
+	 public static BufferedImage convertImage(Image img) {
+	     BufferedImage i = new BufferedImage(img.getWidth(null), img.getHeight(null), BufferedImage.TYPE_4BYTE_ABGR_PRE);
+	     Graphics2D g = i.createGraphics();
+	     g.drawImage(img, 0, 0, null);
+	     g.dispose();
+	     return i;
+	 }
 	
 }

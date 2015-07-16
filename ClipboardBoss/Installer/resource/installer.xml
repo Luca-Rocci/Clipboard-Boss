@@ -60,78 +60,67 @@
 			<description>The core files needed for the application</description>
 			<!-- windows -->
 			<file 
-				src="..\ClipboardBoss.jar"
+				src="ClipboardBoss.jar"
 				targetdir="${INSTALL_PATH}" override="true" >
 				 <os family="windows"/>
 			</file>
 			<file
-				src="..\ClipboardBoss.ico"
+				src="ClipboardBoss.ico"
 				targetdir="${INSTALL_PATH}" override="true" >
 				 <os family="windows"/>
 			</file>
 			<file 
-				src="..\.java.policy"
+				src=".java.policy"
 				targetdir="${INSTALL_PATH}" override="true" >
 				 <os family="windows"/>
 			</file>
 			<file 
-				src="..\License.html"
+				src="License.html"
 				targetdir="${INSTALL_PATH}" override="true" >
 				 <os family="windows"/>
 			</file>
 			
 			<!-- linux -->
 			<file 
-				src="..\ClipboardBoss.jar"
+				src="ClipboardBoss.jar"
 				targetdir="${INSTALL_PATH}" override="true" >
-				 <os family="unix"/>
+				 <os family="linux"/>
 			</file>
 			<file
-				src="..\ClipboardBoss.png"
+				src="ClipboardBoss.png"
 				targetdir="${INSTALL_PATH}" override="true" >
-				 <os family="unix"/>
+				 <os family="linux"/>
 			</file>
 			<file 
-				src="..\.java.policy"
+				src=".java.policy"
 				targetdir="${INSTALL_PATH}" override="true" >
-				 <os family="unix"/>
+				 <os family="linux"/>
 			</file>
 			<file 
-				src="..\License.html"
+				src="License.html"
 				targetdir="${INSTALL_PATH}" override="true" >
-				 <os family="unix"/>
+				 <os family="linux"/>
 			</file>
 			
 			<!-- mac os x -->
+			<fileset dir="App\Contents"
+				targetdir="${INSTALL_PATH}/Contents" override="true">
+				<os family="mac_osx"/>
+			</fileset>
 			<file 
-				src="..\ClipboardBoss.jar"
+				src="ClipboardBoss.jar"
 				targetdir="${INSTALL_PATH}/Contents/Resources/Java" override="true" >
-				 <os family="mac"/>
+				 <os family="mac_osx"/>
 			</file>
 			<file 
-				src="..\ClipboardBoss.icns"
-				targetdir="${INSTALL_PATH}/Contents/Resources" override="true" >
-				 <os family="mac"/>
-			</file>
-			<file 
-				src="..\.java.policy"
+				src=".java.policy"
 				targetdir="${INSTALL_PATH}/Contents/Resources/Java" override="true" >
-				 <os family="mac"/>
+				 <os family="mac_osx"/>
 			</file>
 			<file 
-				src="..\License.html"
+				src="License.html"
 				targetdir="${INSTALL_PATH}/Contents/Resources/Java" override="true" >
-				 <os family="mac"/>
-			</file>
-			<file 
-				src="..\PkgInfo"
-				targetdir="${INSTALL_PATH}/Contents" override="true" >
-				 <os family="mac"/>
-			</file>
-			<file 
-				src="..\Info.plist"
-				targetdir="${INSTALL_PATH}/Contents" override="true" >
-				 <os family="mac"/>
+				 <os family="mac_osx"/>
 			</file>
 			
 			<!-- All -->
@@ -147,57 +136,57 @@
 		<pack name="Config" required="yes" id="pack.conf">
 			<description>Configuration files</description>
 			<file
-				src="..\Config\config.properties"
+				src="Config\config.properties"
 				targetdir="${INSTALL_PATH}\Config" override="true" overrideRenameTo="*.old">
 				 <os family="windows"/>
-				 <os family="unix"/>
+				 <os family="linux"/>
 			</file>
 			<file
-				src="..\Config\config.properties"
+				src="Config\config.properties"
 				targetdir="${INSTALL_PATH}/Contents/Resources/Java/Config" override="true" overrideRenameTo="*.old">
-				 <os family="mac"/>
+				 <os family="mac_osx"/>
 			</file>
 		</pack>
 		<pack name="Log" required="yes" id="pack.log">
 			<description>Log files</description>
 			<file
-				src="..\Log\LogInfo.html"
+				src="Log\LogInfo.html"
 				targetdir="${INSTALL_PATH}\Log" override="true" >
 				 <os family="windows"/>
-				 <os family="unix"/>
+				 <os family="linux"/>
 			</file>
 			<file
-				src="..\Log\LogInfo.html"
+				src="Log\LogInfo.html"
 				targetdir="${INSTALL_PATH}/Contents/Resources/Java/Log" override="true" >
-				 <os family="mac"/>
+				 <os family="mac_osx"/>
 			</file>
 		</pack>
 
 		<pack name="Language" required="yes" id="pack.lang">
 			<description>Language files</description>
-			<fileset dir="..\Lang"
+			<fileset dir="Lang"
 				targetdir="${INSTALL_PATH}/Lang" override="true">
 				<include name="*.properties" />
 				 <os family="windows"/>
-				 <os family="unix"/>
+				 <os family="linux"/>
 			</fileset>
-			<fileset dir="..\Lang"
+			<fileset dir="Lang"
 				targetdir="${INSTALL_PATH}/Contents/Resources/Java/Lang" override="true">
 				<include name="*.properties" />
-				<os family="mac"/>
+				<os family="mac_osx"/>
 			</fileset>
 		</pack>
 		<pack name="Theme" required="yes" id="pack.theme">
 			<description>Theme files</description>
 
-			<fileset dir="..\Theme"
+			<fileset dir="Theme"
 				targetdir="${INSTALL_PATH}/Theme" override="true">
 				 <os family="windows"/>
-				 <os family="unix"/>
+				 <os family="linux"/>
 			</fileset>
-			<fileset dir="..\Theme"
+			<fileset dir="Theme"
 				targetdir="${INSTALL_PATH}/Contents/Resources/Java/Theme" override="true">
-				<os family="mac"/>
+				<os family="mac_osx"/>
 			</fileset>
 		</pack>
 	</packs>
@@ -214,12 +203,12 @@
 	</natives>
 	
 	<resources>
-		<res src="shortcutSpec.xml" id="shortcutSpec.xml"/>
-		<res src="Unix_shortcutSpec.xml" id="Unix_shortcutSpec.xml"/>
-		<res src="Installer.langsel.png" id="installer.langsel.img"/>
-        <res src="Installer.image.png" id="Installer.image.0"/>
-		<res src="Installer.image.png" id="Installer.image"/>
-		<res src="..\License.html" id="HTMLLicencePanel.licence" />
+		<res src="Installer\resource\shortcutSpec.xml" id="shortcutSpec.xml"/>
+		<res src="Installer\resource\Unix_shortcutSpec.xml" id="Unix_shortcutSpec.xml"/>
+		<res src="Installer\resource\Installer.langsel.png" id="installer.langsel.img"/>
+        <res src="Installer\resource\Installer.image.png" id="Installer.image.0"/>
+		<res src="Installer\resource\Installer.image.png" id="Installer.image"/>
+		<res src="License.html" id="HTMLLicencePanel.licence" />
 	</resources>
 	
 	<variables>
@@ -228,8 +217,8 @@
 		<variable name="StandardPanel" value="hide"/>
 		<variable name="StartupShortcutCheckboxEnabled" value="true"/>
 		<variable name="TargetPanel.dir.windows" value="$USER_HOME\ClipboardBoss"/>
-		<variable name="TargetPanel.dir.unix" value="$USER_HOME/ClipboardBoss"/>
-		<variable name="TargetPanel.dir.macosx" value="/Applications/ClipboardBoss.app"/>
+		<variable name="TargetPanel.dir.linux" value="$USER_HOME/ClipboardBoss"/>
+		<variable name="TargetPanel.dir.mac_osx" value="/Applications/ClipboardBoss.app"/>
  		<!-- variable name="DEFAULT_INSTALL_PATH" value="$USER_HOME/Clipboard Boss"/> -->
 	</variables> 
 	

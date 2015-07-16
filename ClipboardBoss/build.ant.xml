@@ -2,8 +2,9 @@
 <project default="make-full" name="Crea il jar per la distribuzione">
 
 	<property name="app-name" value="ClipboardBoss" />
-	<property name="bin-dir" value="../bin" />
-	<property name="jar-dir" value="../jar" />
+	<property name="app-ver" value="1.0" />
+	<property name="bin-dir" value="${basedir}/bin" />
+	<property name="jar-dir" value="${basedir}/jar" />
 
 	<tstamp>
 		<format property='build-time' pattern='dd-MM-yyyy HH:mm:ss' />
@@ -22,8 +23,8 @@
 	<taskdef name="izpack" classpathref="build.classpath" classname="com.izforge.izpack.ant.IzPackTask" />
 
 	<target name="make-jar">
-		<buildnumber file="${app-name}.buildnumber" />
-		<jar basedir="${bin-dir}" destfile="${jar-dir}/${app-name}-${build.number}.jar">
+
+		<jar basedir="${bin-dir}" destfile="${jar-dir}/${app-name}-${app-ver}.jar">
 			<manifest>
 				<attribute name="Built-By" value="${user.name}" />
 				<attribute name="Built-On" value="${os.name}" />
@@ -31,14 +32,14 @@
 				<attribute name="Build-Jdk" value="1.6" />
 				<section name="${app-name}" >
 					<attribute name="Implementation-Title" value="${app-name}" />
-					<attribute name="Implementation-Version" value="${build.number}" />
+					<attribute name="Implementation-Version" value="${app-ver}" />
 					<attribute name="Implementation-Vendor" value="Luca Rocci" />
 				</section>
 				<attribute name="Main-Class" value="it.rocci.clipboss.MainApp"/>
 				<attribute name="Class-Path" value="."/>
 			</manifest>
 		</jar>
-		<copy file="${jar-dir}/${app-name}-${build.number}.jar" tofile="../${app-name}.jar"/>
+		<copy file="${jar-dir}/${app-name}-${app-ver}.jar" tofile="${basedir}/${app-name}.jar"/>
 	</target>
 
 	<target name="make-full">
@@ -58,7 +59,7 @@
                 copyright="Copyright &#xa9; 2015 Luca Rocci"
 				shortname="Clipboard Boss"
     			jvmversion="1.6+"
-				infostring="$Clipboard Boss, Copyright &#xa9; 2015 Luca Rocci"
+				infostring="Clipboard Boss, Copyright &#xa9; 2015 Luca Rocci"
 				build="1.0"
 				bundleid="it.rocci.clipboss.MainApp" >
 
@@ -70,10 +71,10 @@
 	</target -->
 
 	<target name="make-install">
-		<izpack input="installer.xml"
-                output="${basedir}/installer/${app-name}-uni.jar"
+		<izpack input="${basedir}\Installer\resource\installer.xml"
+                output="${basedir}\Installer\release\${app-name}-uni.jar"
                 installerType="standard"
-                inheritAll="true"
+                inheritAll="true" 
                 basedir="${basedir}"
                 izPackDir="${user.home}/IzPack/" />
 	</target>
@@ -81,16 +82,16 @@
 	<target name="make-app">
 		<exec executable="C:\Python34\python.exe" failonerror="true">
 			<arg line="${user.home}\IzPack\utils\wrappers\izpack2app\izpack2app2.py"/>
-			<arg line="${basedir}\installer\${app-name}-uni.jar"/>
-			<arg line="${basedir}\installer\${app-name}-macosx.app"/>
+			<arg line="${basedir}\Installer\release\${app-name}-uni.jar"/>
+			<arg line="${basedir}\Installer\release\${app-name}-macosx.app"/>
 		</exec>
 	</target>
 
 	<target name="make-exe">
 		<exec executable="C:\Python34\python.exe" failonerror="true">
 			<arg line="${user.home}/IzPack/utils/wrappers/izpack2exe/izpack2exe.py"/>
-			<arg line="--file=${basedir}/installer/${app-name}-uni.jar"/>
-			<arg line="--output=${basedir}/installer/${app-name}-win.exe"/>
+			<arg line="--file=${basedir}/Installer/release/${app-name}-uni.jar"/>
+			<arg line="--output=${basedir}/Installer/release/${app-name}-win.exe"/>
 			<arg line="--no-upx"/>
 			<arg line="--with-7z=${user.home}/IzPack/utils/wrappers/izpack2exe/7za.exe"/>
 			<arg line="--launch-file=${app-name}-uni.jar"/>
