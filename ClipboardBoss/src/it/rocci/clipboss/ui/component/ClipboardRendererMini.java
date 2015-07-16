@@ -76,4 +76,5 @@ public class ClipboardRendererMini extends JPanel implements ListCellRenderer {
 		return this;
 
 	}
+	
 }

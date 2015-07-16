@@ -40,6 +40,8 @@ import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
 import javax.swing.border.TitledBorder;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 public class SettingsDialog extends Dialog implements ActionListener {
 
@@ -71,10 +73,9 @@ public class SettingsDialog extends Dialog implements ActionListener {
 		panelFunc.setBorder(title);
 		panelFunc.setLayout(new BoxLayout(panelFunc, BoxLayout.PAGE_AXIS));
 		
+		panelFunc.add(getNumberSettings("settings.function.maxitem",10,50,1)); 
+		panelFunc.add(getNumberSettings("settings.function.polling",200,10000,50)); 
 		panelFunc.add(getBooleanSettings("settings.function.autorun"));
-		panelFunc.add(getBooleanSettings("settings.function.minimizze"));
-		panelFunc.add(getNumberSettings("settings.function.maxitem")); 
-		panelFunc.add(getPositionSettings("settings.function.position")); 
 		panelCenter.add(panelUI);
 		panelCenter.add(panelFunc);
 		panelCenter.add(Box.createVerticalGlue());
@@ -97,6 +98,7 @@ public class SettingsDialog extends Dialog implements ActionListener {
 			String path = MainApp.class.getProtectionDomain().getCodeSource().getLocation().getPath();
 			try {
 				String decodedPath = URLDecoder.decode(path, "UTF-8");
+				System.out.println(decodedPath);
 			} catch (UnsupportedEncodingException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
@@ -120,7 +122,7 @@ public class SettingsDialog extends Dialog implements ActionListener {
 		label.setOpaque(false);
 		
 		JComboBox combo = new JComboBox();
-		combo.setPreferredSize(new Dimension(200, 26));
+		combo.setPreferredSize(new Dimension(70, 26));
 		combo.setRenderer(new LabelListRenderer());
 
 		for (Locale l : Utils.supportedLocales) {
@@ -141,43 +143,6 @@ public class SettingsDialog extends Dialog implements ActionListener {
 		return locale;
 	}
 	
-	private JPanel getPositionSettings(String key) {
-		String value = Configuration.getString(key);
-
-		JPanel locale = new JPanel();
-		locale.setLayout(new BoxLayout(locale, BoxLayout.LINE_AXIS));
-		locale.setBorder(BorderFactory.createEmptyBorder(2, 5, 5, 5));
-		locale.setPreferredSize(new Dimension(500, 30));
-		locale.setMaximumSize(new Dimension(1000,30));
-		locale.setMinimumSize(new Dimension(200,30));
-		locale.setOpaque(false);
-
-		JLabel label = new JLabel(Utils.getLabel(key));
-		label.setPreferredSize(new Dimension(200, 26));
-		label.setOpaque(false);
-		
-		JComboBox combo = new JComboBox();
-		combo.setPreferredSize(new Dimension(200, 26));
-		combo.setRenderer(new LabelListRenderer());
-
-		for (String p : Utils.supportedPositions) {
-			final JLabel themeItem = new JLabel(Utils.getLabel(key+ "." +p),SwingConstants.LEFT);
-			themeItem.setToolTipText(p);
-			combo.addItem(themeItem);
-					if (value.equals(p)) {
-						combo.setSelectedItem(themeItem);
-					}
-		}
-
-		combo.addActionListener(this);
-		combo.setActionCommand(key);
-		
-		locale.add(label);
-		locale.add(Box.createHorizontalGlue());
-		locale.add(combo);
-		return locale;
-	}
-
 	private JPanel getThemeSettings(String key) {
 		String value = Configuration.getString(key);
 		
@@ -194,7 +159,7 @@ public class SettingsDialog extends Dialog implements ActionListener {
 		label.setOpaque(false);
 		
 		JComboBox combo = new JComboBox();
-		combo.setPreferredSize(new Dimension(200, 26));
+		combo.setPreferredSize(new Dimension(70, 26));
 		combo.setRenderer(new LabelListRenderer());
 		
 		File themeList = new File("Theme");
@@ -247,7 +212,7 @@ public class SettingsDialog extends Dialog implements ActionListener {
 		return function;
 	}
 	
-	private JPanel getNumberSettings(String key) {
+	private JPanel getNumberSettings(final String key,int min, int max, int step) {
 		String value = Configuration.getString(key);
 		
 		JPanel theme = new JPanel();
@@ -262,13 +227,20 @@ public class SettingsDialog extends Dialog implements ActionListener {
 		label.setPreferredSize(new Dimension(200, 26));
 		label.setOpaque(false);
 		
-		SpinnerModel intModel = new SpinnerNumberModel(20,5,50,1);
+		SpinnerModel intModel = new SpinnerNumberModel(min,min,max,step);
 		JSpinner spinner = new JSpinner(intModel);
 		spinner.setEditor(new JSpinner.NumberEditor(spinner, "#"));
-	
+		spinner.setPreferredSize(new Dimension(70, 26));
 		intModel.setValue(Integer.valueOf(value));
-		//intModel.addChangeListener(l);
-		
+		intModel.addChangeListener(new ChangeListener() {
+			
+			@Override
+			public void stateChanged(ChangeEvent e) {
+				Configuration.setString(key,String.valueOf(((SpinnerModel)e.getSource()).getValue()));
+				
+			}
+		});
+
 		theme.add(label);
 		theme.add(Box.createHorizontalGlue());
 		theme.add(spinner);
