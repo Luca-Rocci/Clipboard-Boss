@@ -201,8 +201,8 @@
 	</natives>
 	
 	<resources>
-		<res src="Installer\resource\shortcutSpec.xml" id="shortcutSpec.xml"/>
-		<res src="Installer\resource\Unix_shortcutSpec.xml" id="Unix_shortcutSpec.xml"/>
+		<res src="Installer\resource\WinShortcutSpec.xml" id="shortcutSpec.xml"/>
+		<res src="Installer\resource\LinuxShortcutSpec.xml" id="Linux_shortcutSpec.xml"/>
 		<res src="Installer\resource\Installer.langsel.png" id="installer.langsel.img"/>
         <res src="Installer\resource\Installer.image.png" id="Installer.image.0"/>
 		<res src="Installer\resource\Installer.image.png" id="Installer.image"/>

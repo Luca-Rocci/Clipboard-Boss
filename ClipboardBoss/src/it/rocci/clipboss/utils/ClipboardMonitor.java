@@ -40,7 +40,7 @@ public class ClipboardMonitor implements Runnable {
 			} catch (InterruptedException ex) {
 			}
 			getContents();
-			if (previousFlavor.equals(currentFlavor)) {
+			if (previousFlavor != null && previousFlavor.equals(currentFlavor)) {
 				if(previousFlavor.equals(DataFlavor.stringFlavor) && !previousContent.equals(currentContent)) {
 					previousContent = currentContent;
 					hasChanged();
