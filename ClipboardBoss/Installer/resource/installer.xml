@@ -25,7 +25,8 @@
 	</locale>
 
 <guiprefs width="500" height="390" resizable="no">
-
+  <modifier key="headingPanelCounter" value="text"/>
+  <modifier key="headingPanelCounterPos" value="inNavigationPanel"/>
 <!--
   <modifier key="labelGap" value="2"/>
   <modifier key="useHeadingPanel" value="yes"/>
@@ -101,6 +102,9 @@
 				targetdir="${INSTALL_PATH}" override="true" >
 				 <os family="linux"/>
 			</file>
+			<executable targetfile="${INSTALL_PATH}/ClipboardBoss.jar" stage="never" >
+            	<os family="linux"/>
+        	</executable>
 			
 			<!-- mac os x -->
 			<fileset dir="App"
@@ -122,16 +126,10 @@
 				targetdir="${INSTALL_PATH}/Contents/Resources/Java" override="true" >
 				 <os family="mac_osx"/>
 			</file>
-			
-			<!-- All -->
-			<executable>
-				<fileset>
-					<include name="**/*.jar" />
-					<include name="**/*.cmd" />
-					<include name="**/*.exe" />
-					<include name="**/*.sh" />
-				</fileset>
-			</executable>
+			<executable targetfile="${INSTALL_PATH}/Contents/Resources/Java/ClipboardBoss.jar" stage="never" >
+            	<os family="mac_osx"/>
+        	</executable>
+					
 		</pack>
 		<pack name="Config" required="yes" id="pack.conf">
 			<description>Configuration files</description>

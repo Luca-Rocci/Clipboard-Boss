@@ -45,12 +45,12 @@ public class Utils {
 	public static final String UserHome = System.getProperty("user.home");
 	
 	static {
-		// logger
 		logger = Logger.getLogger("it.rocci.clipboss");
 		FileHandler fh = null;
 		try {
-			fh = new FileHandler(LOG_FILE);
+			fh = new FileHandler(LOG_FILE,true);
 		} catch (final Exception e) {
+			e.printStackTrace();
 		}
 		logger.addHandler(fh);
 		logger.setLevel(Level.ALL);
