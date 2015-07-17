@@ -103,8 +103,8 @@
 			</file>
 			
 			<!-- mac os x -->
-			<fileset dir="App\Contents"
-				targetdir="${INSTALL_PATH}/Contents" override="true">
+			<fileset dir="App"
+				targetdir="${INSTALL_PATH}" override="true">
 				<os family="mac_osx"/>
 			</fileset>
 			<file 
@@ -219,7 +219,6 @@
 		<variable name="TargetPanel.dir.windows" value="$USER_HOME\ClipboardBoss"/>
 		<variable name="TargetPanel.dir.linux" value="$USER_HOME/ClipboardBoss"/>
 		<variable name="TargetPanel.dir.mac_osx" value="/Applications/ClipboardBoss.app"/>
- 		<!-- variable name="DEFAULT_INSTALL_PATH" value="$USER_HOME/Clipboard Boss"/> -->
 	</variables> 
 	
 	<conditions>
