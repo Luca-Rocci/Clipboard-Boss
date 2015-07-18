@@ -10,11 +10,14 @@
 		<appsubpath>ClipboardBoss</appsubpath>
 		<javaversion>1.6</javaversion>
 		<requiresjdk>no</requiresjdk>
-		<authors>
+		<authors> 
 			<author email="" name="Luca Rocci" />
 		</authors>
-		<url>https://github.com/Luca-Rocci/Clipboard-Boss</url>
+		<url >https://github.com/Luca-Rocci/Clipboard-Boss</url>
 		<!-- run-privileged condition="izpack.windowsinstall.vista|izpack.windowsinstall.7|izpack.windowsinstall.8|izpack.macinstall" / -->
+	<uninstaller write="no" >
+	</uninstaller>
+<writeinstallationinformation>no</writeinstallationinformation>
 	</info>
 
 	<locale>
@@ -52,7 +55,7 @@
 		<panel classname="TargetPanel" />
 		<panel classname="InstallPanel" />
 		<panel classname="ShortcutPanel" condition="showStandardPanel" />
-		<panel classname="it.rocci.izpack.panels.ShortcutPanel" condition="showShortcutPanel" id="customShortcutPanel" jar="lib/IzPackCustomPanels.jar" />
+		<!-- panel classname="it.rocci.izpack.panels.ShortcutPanel" condition="showShortcutPanel" id="customShortcutPanel" jar="lib/IzPackCustomPanels.jar" / -->
 		<panel classname="SimpleFinishPanel" />
 	</panels>
 
