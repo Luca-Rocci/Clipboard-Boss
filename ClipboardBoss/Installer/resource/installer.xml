@@ -15,8 +15,8 @@
 		</authors>
 		<url >https://github.com/Luca-Rocci/Clipboard-Boss</url>
 		<!-- run-privileged condition="izpack.windowsinstall.vista|izpack.windowsinstall.7|izpack.windowsinstall.8|izpack.macinstall" / -->
-	<uninstaller write="no" >
-	</uninstaller>
+	<!-- uninstaller write="no" -->
+
 <writeinstallationinformation>no</writeinstallationinformation>
 	</info>
 
@@ -132,7 +132,9 @@
 			<executable targetfile="${INSTALL_PATH}/Contents/Resources/Java/ClipboardBoss.jar" stage="never" >
             	<os family="mac_osx"/>
         	</executable>
-					
+			<executable targetfile="${INSTALL_PATH}/Contents/MacOS/JavaApplicationStub" stage="never" >
+            	<os family="mac_osx"/>
+        	</executable>	
 		</pack>
 		<pack name="Config" required="yes" id="pack.conf">
 			<description>Configuration files</description>

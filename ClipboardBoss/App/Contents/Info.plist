@@ -29,6 +29,8 @@
     <string>Copyright © 2015 Luca Rocci</string>
     <key>Java</key>
     <dict>
+      <key>WorkingDirectory</key>
+      <string>$JAVAROOT</string>
       <key>MainClass</key>
       <string>it.rocci.clipboss.MainApp</string>
       <key>JVMVersion</key>
@@ -36,10 +38,6 @@
       <key>ClassPath</key>
       <array>
         <string>$JAVAROOT/ClipboardBoss.jar</string>
-        <string>$JAVAROOT/Log</string>
-        <string>$JAVAROOT/Lang</string>
-        <string>$JAVAROOT/Config</string>
-        <string>$JAVAROOT/Theme</string>
       </array>
       <key>VMOptions</key>
       <array>

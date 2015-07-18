@@ -66,7 +66,7 @@ public class MainApp {
 		} catch (AWTException ex) {
 			Utils.logger.log(Level.WARNING, "Unable to add system tray ");
 			mainWindow.setVisible(true);
-			mainWindow.setState(mainWindow.ICONIFIED);
+//			mainWindow.setState(mainWindow.ICONIFIED);
 		}
 
 		Thread monitorThread = new Thread(new ClipboardMonitor(mainWindow.getModel()));
