@@ -50,7 +50,7 @@ public class AboutDialog extends Dialog {
 				if ((desktop != null)
 						&& desktop.isSupported(Desktop.Action.BROWSE)) {
 					try {
-						desktop.browse(new URI("https://github.com/Luca-Rocci/Clipboard-Boss/wiki"));
+						desktop.browse(new URI("http://luca-rocci.github.io/Clipboard-Boss/"));
 						AboutDialog.this.dispose();
 					} catch (final Exception e) {
 						e.printStackTrace();

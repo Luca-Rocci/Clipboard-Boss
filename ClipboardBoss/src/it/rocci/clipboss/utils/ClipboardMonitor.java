@@ -22,9 +22,13 @@ public class ClipboardMonitor implements Runnable {
 	private DataFlavor currentFlavor;
 
 	private DefaultListModel model;
+	private Integer iSleep;
+	private Integer iMax;
 
 	public ClipboardMonitor(DefaultListModel model) {
 		this.model = model;
+		iSleep = Integer.valueOf(Configuration.getString("settings.function.polling"));
+		iMax = Integer.valueOf(Configuration.getString("settings.function.maxitem"));
 	}
 
 	@Override
@@ -35,7 +39,6 @@ public class ClipboardMonitor implements Runnable {
 
 		while (true) {
 			try {
-				int iSleep = Integer.valueOf(Configuration.getString("settings.function.polling"));
 				Thread.sleep(iSleep);
 			} catch (InterruptedException ex) {
 			}
@@ -63,12 +66,14 @@ public class ClipboardMonitor implements Runnable {
 	private void hasChanged() {
 		Utils.logger.log(Level.INFO, "Clipboard content updated");
 		if(previousFlavor.equals(DataFlavor.stringFlavor)) {
-			model.addElement(new ClipboardItem(0,previousContent,new Date()));
+			model.add(0,new ClipboardItem(0,previousContent,new Date()));
 		} 
 		else if (previousFlavor.equals(DataFlavor.imageFlavor)) {
-			model.addElement(new ClipboardItem(1,previousContent,new Date()));               
+			model.add(0,new ClipboardItem(1,previousContent,new Date()));
 		}  
-
+		if (model.getSize()> iMax) {
+			model.remove(model.getSize()-1);
+		}
 	}
 
 	private void getContents() {

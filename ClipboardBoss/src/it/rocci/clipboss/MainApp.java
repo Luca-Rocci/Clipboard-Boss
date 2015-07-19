@@ -9,9 +9,13 @@ import it.rocci.clipboss.utils.Utils;
 import java.awt.AWTException;
 import java.awt.EventQueue;
 import java.awt.Image;
+import java.awt.MenuItem;
+import java.awt.PopupMenu;
 import java.awt.SystemTray;
 import java.awt.Toolkit;
 import java.awt.TrayIcon;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.logging.Level;
@@ -46,7 +50,20 @@ public class MainApp {
 			Utils.logger.log(Level.INFO, "System tray supported");
 			tray=SystemTray.getSystemTray();
 
-			trayIcon=new TrayIcon(image, Utils.getLabel("title"));
+		PopupMenu menu = new PopupMenu();
+			MenuItem item1 = new MenuItem("Exit");
+			menu.add(item1);
+			item1.addActionListener(new ActionListener() {
+			 public void actionPerformed(ActionEvent e) {
+			 System.exit(0);
+			  }
+			 });
+			
+
+			
+			
+			
+			trayIcon=new TrayIcon(image, Utils.getLabel("title"),menu);
 			trayIcon.setImageAutoSize(true);
 
 			trayIcon.addMouseListener(new MouseAdapter() {

@@ -186,6 +186,7 @@ public class MainWindow extends JFrame {
 		list.setCellRenderer(new ClipboardRenderer());
 		list.setSelectionBackground(Utils.getColorStart());
 		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		list.setFixedCellWidth(500);
 		
 		final JScrollPane spCenter = new JScrollPane(list);
 		spCenter.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
