@@ -1,5 +1,6 @@
 package it.rocci.clipboss.ui.component;
 
+import it.rocci.clipboss.model.Theme;
 import it.rocci.clipboss.utils.Utils;
 
 import java.awt.BorderLayout;
@@ -30,9 +31,9 @@ private JLabel message;
         Color WHITE_LINE_COLOR = getBackground().brighter();   
 	    String strText = "Clipboard Boss - Rocci Luca 2015";
 
-      g.setFont(Utils.getFontText());
+      g.setFont(Theme.getFontText());
       
-      FontMetrics fontMetrics = g.getFontMetrics(Utils.getFontText());
+      FontMetrics fontMetrics = g.getFontMetrics(Theme.getFontText());
     int width = fontMetrics.stringWidth(strText);
     
     g.setColor(WHITE_LINE_COLOR);

@@ -1,5 +1,6 @@
 package it.rocci.clipboss.ui.component;
 
+import it.rocci.clipboss.model.Theme;
 import it.rocci.clipboss.utils.Utils;
 
 import java.awt.BorderLayout;
@@ -18,12 +19,12 @@ import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.JToolBar.Separator;
 
-public class Dialog extends JDialog {
+public class Dialog extends JDialog implements ActionListener {
 
 	private static final long serialVersionUID = 1111111100000000112L;
 	private final Header header;
 	public JPanel footer;
-	public Button close;
+	public Button btnClose;
 	private Point initialClick;
 
 	public Dialog() {
@@ -33,29 +34,12 @@ public class Dialog extends JDialog {
 		this.setTitle(Utils.getLabel("title"));
 		this.setLayout(new BorderLayout());
 
-		this.setForeground(Utils.getColorText());
-		this.setFont(Utils.getFontText());
-		this.setBackground(Utils.getColorBackground());
-
-		this.footer.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
-
-		this.close = new Button();
-		this.close.setIcon("close-24");
-		this.close.setText(Utils.getLabel("close"));
-		this.close.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent event) {
-				Dialog.this.dispose();
-			}
-		});
-
-		this.header.setColorStart(Utils.getColorStart());
-		this.header.setColorEnd(Utils.getColorEnd());
+		this.btnClose = new Button(this);
 
 		this.footer.setLayout(new BorderLayout());
-		this.footer.setBackground(Utils.getColorBackground());
+		this.footer.setBackground(Theme.getColorBackground());
 		this.footer.add(new Separator(), BorderLayout.PAGE_START);
-		this.footer.add(this.close, BorderLayout.LINE_END);
+		this.footer.add(this.btnClose, BorderLayout.LINE_END);
 
 		this.add(this.header, BorderLayout.PAGE_START);
 		this.add(this.footer, BorderLayout.PAGE_END);
@@ -65,8 +49,6 @@ public class Dialog extends JDialog {
 		this.setSize(450, 300);
 
 		setUndecorated(true);
-
-		getRootPane().setBorder(BorderFactory.createLineBorder(Utils.getColorStart().darker(), 1));
 
 		this.header.addMouseListener(new MouseAdapter() {
 			public void mousePressed(MouseEvent e) {
@@ -91,6 +73,25 @@ public class Dialog extends JDialog {
 			}
 
 		});
+		
+	}
+	
+	public void updateUI() {
+		this.setForeground(Theme.getColorText());
+		this.setFont(Theme.getFontText());
+		this.setBackground(Theme.getColorBackground());
+
+		this.footer.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
+
+		this.setTitle(Utils.getLabel("title"));
+		this.header.setColorStart(Theme.getColorStart());
+		this.header.setColorEnd(Theme.getColorEnd());
+		
+		this.btnClose.setIcon("close-24");
+		this.btnClose.setText(Utils.getLabel("close"));
+		this.btnClose.init();
+		
+		getRootPane().setBorder(BorderFactory.createLineBorder(Theme.getColorStart().darker(), 1));
 	}
 
 	public void setDescription(String description) {
@@ -107,6 +108,19 @@ public class Dialog extends JDialog {
 			super.setTitle(title);
 		} else {
 			this.header.setTitle(title);
+		}
+	}
+	
+	@Override
+	public void setVisible(boolean b) {
+		updateUI();
+		super.setVisible(b);
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		if (e.getSource() == btnClose) {
+			Dialog.this.dispose();	
 		}
 	}
 }

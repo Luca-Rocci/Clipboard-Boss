@@ -1,6 +1,8 @@
 package it.rocci.clipboss.utils;
 
 
+import it.rocci.clipboss.model.Theme;
+
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
@@ -30,8 +32,6 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 
 public class Utils {
-
-    private static Properties propTheme;
 	
 	public static final String FILE_SEPARATOR = System.getProperty("file.separator");
 	public static final String CONFIG_FILE = "Config" + FILE_SEPARATOR + "config.properties";
@@ -71,9 +71,7 @@ public class Utils {
 	}
 
 	public static ImageIcon getIcon(String icon) {
-		String path = "Theme" + FILE_SEPARATOR + Configuration.getString("settings.ui.theme") + FILE_SEPARATOR + icon;
-			ImageIcon imgIcon = new ImageIcon(path);
-		return imgIcon;
+		return Theme.getIcon(icon);
 	}
 
 	public static String getLabel(String label) {
@@ -101,66 +99,10 @@ public class Utils {
 		return resourceBundle.getString(label);
 	};
 	
-	public static Color getColorStart() {
-		loadThemeInfo();
-			return Color.decode(propTheme.getProperty("theme.color.start", "#86abd9"));
+	public static void cleanLangBundle() {
+		resourceBundle = null;
 	}
 	
-	public static Color getColorEnd() {
-		loadThemeInfo();
-			return Color.decode(propTheme.getProperty("theme.color.end", "#ffffff"));
-	}
-	
-	public static Color getColorText() {
-		loadThemeInfo();
-			return Color.decode(propTheme.getProperty("theme.color.text", "#000000"));
-	}
-	
-	public static Color getColorTextHover() {
-		loadThemeInfo();
-			return Color.decode(propTheme.getProperty("theme.color.texthover", "#666666"));
-	}
-	
-	public static Color getColorBackground() {
-		loadThemeInfo();
-			return Color.decode(propTheme.getProperty("theme.color.background", "#ffffff"));
-	}
-	
-	public static void loadThemeInfo() {
-		if (propTheme == null) {
-			 propTheme = new Properties();
-	    	 try {
-	    		 String path = "Theme" + FILE_SEPARATOR + Configuration.getString("settings.ui.theme") + FILE_SEPARATOR + "Theme.info";
-	    		 propTheme.load(new FileInputStream(path));
-	         } catch(IOException e) {
-	        		Utils.logger.log(Level.CONFIG, "Load " + Utils.CONFIG_FILE +" failed", e);
-	         }
-		}
-	}
-	
-	public static Font getFontTitle() {
-		loadThemeInfo();
-		String path = "Theme" + FILE_SEPARATOR + Configuration.getString("settings.ui.theme") + FILE_SEPARATOR + propTheme.getProperty("theme.font.title", "");
-		try {
-			File file = new File(path);
-			return Font.createFont(Font.TRUETYPE_FONT, file).deriveFont(Font.PLAIN, 22);
-		} catch (Exception e) {
-            logger.log(Level.SEVERE, "load failed " + path);
-		}
-		return null;
-	}
-	
-	public static Font getFontText() {
-		String path = "Theme" + FILE_SEPARATOR + Configuration.getString("settings.ui.theme") + FILE_SEPARATOR + propTheme.getProperty("theme.font.text", "");
-		try {
-			File file = new File(path);
-			return Font.createFont(Font.TRUETYPE_FONT, file).deriveFont(Font.PLAIN, 12);
-		} catch (Exception e) {
-            logger.log(Level.SEVERE, "load failed " + path);
-		}
-		return null;
-	}
-
 	public static boolean isLinux() {
 		return (OsName.indexOf("linux") >= 0);
 	}
@@ -180,8 +122,6 @@ public class Utils {
 		Locale.FRENCH,
 		    Locale.GERMAN
 		};
-
-	public static String[] supportedPositions = { "Auto","TopRight", "TopLeft", "BottomRight", "BottomLeft" };
 	
 	 static boolean bufferedImageEquals( BufferedImage b1, BufferedImage b2 ) {
 		    if ( b1 == b2 ) {return true;} // true if both are null

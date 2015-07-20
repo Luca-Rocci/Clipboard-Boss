@@ -1,6 +1,7 @@
 package it.rocci.clipboss.ui;
 
 import it.rocci.clipboss.model.ClipboardItem;
+import it.rocci.clipboss.model.Theme;
 import it.rocci.clipboss.ui.component.Button;
 import it.rocci.clipboss.ui.component.ClipboardRenderer;
 import it.rocci.clipboss.ui.component.Header;
@@ -21,6 +22,8 @@ import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.StringSelection;
 import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
@@ -37,21 +40,23 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 
-public class MainWindow extends JFrame {
+public class MainWindow extends JFrame implements ActionListener {
 
 	private static final long serialVersionUID = 1111111100000000111L;
-
 	private final StatusBar statusBar;
-	
 	private final Header header;
-
 	private DefaultListModel model;
-
 	private Point initialClick;
-
 	private JList list;
+	private Button btnClose;
+	private Button btnMinimize;
+	private Button btnSettings;
+	private Button btnAbout;
+	private Button btnDelete;
 
 	public DefaultListModel getModel() {
 		return model;
@@ -61,96 +66,57 @@ public class MainWindow extends JFrame {
 
 		// initialize
 		this.statusBar = new StatusBar();
-		this.statusBar.setBackground(Utils.getColorStart());
+		this.statusBar.setBackground(Theme.getColorStart());
 		
 		this.header = new Header(Utils.getLabel("title"), "",
-				Utils.getIcon("clipboard.png"));
+				Theme.getIcon("clipboard.png"));
 		this.header.setDimension(new Dimension(100, 60));
-		this.header.setColorStart(Utils.getColorStart());
-		this.header.setColorEnd(Utils.getColorEnd());
-		
-		this.setForeground(Utils.getColorText());
-		this.setFont(Utils.getFontText());
-		this.setBackground(Utils.getColorBackground());
 		
 		JPanel pnlButton = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		pnlButton.setBorder(new EmptyBorder(1, 1, 1, 1));
 		pnlButton.setOpaque(false);
 
-		Button btnClose= new Button();
-		btnClose.setIcon("close-24");
-		btnClose.setText(Utils.getLabel("close"));
-		btnClose.addMouseListener(new MouseAdapter()  
-		{  
-		    public void mouseClicked(MouseEvent e)  
-		    {  
-		    	System.exit(0);
-		    }  
-		}); 
+		btnClose = new Button(this);
+		btnMinimize = new Button(this);
+		btnSettings= new Button(this);
+		btnAbout= new Button(this);
+		btnDelete= new Button(this);
 		
-		Button btnMinimize = new Button();
-		btnMinimize.setIcon("down-24");
-		btnMinimize.setText(Utils.getLabel("minimize"));
-		btnMinimize.addMouseListener(new MouseAdapter()  
-		{  
-		    public void mouseClicked(MouseEvent e)  
-		    {  
-//		    if (Utils.isMac()) {
-//		    	setState(ICONIFIED);
-//			} else { 
-		    	setVisible(false);
-//			}
-		    }  
-		}); 
-		
-		Button btnSettings= new Button();
-		btnSettings.setIcon("settings-24");
-		btnSettings.setText(Utils.getLabel("settings"));
 		btnSettings.addMouseListener(new MouseAdapter()  
 		{  
-		    public void mouseClicked(MouseEvent e)  
-		    {  
-				final SettingsDialog sd = new SettingsDialog();
-				sd.setLocationRelativeTo(null);
-				sd.setVisible(true);
-		    }  
+
+		    @Override
+		    public void mouseExited(MouseEvent e) {
+		    	invalidate();
+		    	updateUI();
+		    	super.mouseExited(e);
+		    }
+		    
 		}); 
 		
-		Button btnAbout= new Button();
-		btnAbout.setIcon("about-24");
-		btnAbout.setText(Utils.getLabel("about"));
-		btnAbout.addMouseListener(new MouseAdapter()  
-		{  
-		    public void mouseClicked(MouseEvent e)  
-		    {  
-				final AboutDialog ad = new AboutDialog();
-				ad.setLocationRelativeTo(null);
-				ad.setVisible(true);
-		    }  
-		}); 
 		
-		Button btnDelete= new Button();
-		btnDelete.setIcon("delete-24");
-		btnDelete.setText(Utils.getLabel("delete"));
-		btnDelete.addMouseListener(new MouseAdapter()  
-		{  
-		    public void mouseClicked(MouseEvent e)  
-		    {  
-		    	int selectedIndex = list.getSelectedIndex();
-		    	   if (selectedIndex != -1) {
-		    		   model.remove(selectedIndex);
-		    	   }
-		    }  
-		}); 
+		pnlButton.add(btnMinimize);
+		pnlButton.add(btnClose);
+		pnlButton.add(btnSettings);
+		pnlButton.add(btnAbout);
+		pnlButton.add(btnDelete);
 		
-		Button btnCopy = new Button();
-		btnCopy.setIcon("copy-24");
-		btnCopy.setText(Utils.getLabel("copy"));
-		btnCopy.addMouseListener(new MouseAdapter()  
-		{  
-		    public void mouseClicked(MouseEvent e)  
-		    {  
-		    	int selectedIndex = list.getSelectedIndex();
+		this.header.setLayout(new BorderLayout());
+		this.header.add(pnlButton,BorderLayout.PAGE_END);
+		
+		this.setLayout(new BorderLayout());
+
+		model = new DefaultListModel();
+
+		list = new JList(model);
+		list.setCellRenderer(new ClipboardRenderer());
+		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		list.setFixedCellWidth(500);
+		list.addListSelectionListener(new ListSelectionListener() {
+		      public void valueChanged(ListSelectionEvent evt) {
+		          if (evt.getValueIsAdjusting())
+		            return;
+		          int selectedIndex = list.getSelectedIndex();
 		    	   if (selectedIndex != -1) {
 		    		   ClipboardItem ci = (ClipboardItem) model.get(selectedIndex);
 		    		   if (ci.getType() == 0) {
@@ -164,29 +130,8 @@ public class MainWindow extends JFrame {
 					        clip.setContents(selection,selection);
 		    		   }
 		    	   }
-		    }  
-		}); 
-		
-		
-		pnlButton.add(btnMinimize);
-		pnlButton.add(btnClose);
-		pnlButton.add(btnSettings);
-		pnlButton.add(btnAbout);
-		pnlButton.add(btnCopy);
-		pnlButton.add(btnDelete);
-		
-		this.header.setLayout(new BorderLayout());
-		this.header.add(pnlButton,BorderLayout.PAGE_END);
-		
-		this.setLayout(new BorderLayout());
-
-		model = new DefaultListModel();
-
-		list = new JList(model);
-		list.setCellRenderer(new ClipboardRenderer());
-		list.setSelectionBackground(Utils.getColorStart());
-		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		list.setFixedCellWidth(500);
+		        }
+		      });
 		
 		final JScrollPane spCenter = new JScrollPane(list);
 		spCenter.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
@@ -199,8 +144,6 @@ public class MainWindow extends JFrame {
 		this.add(this.statusBar, BorderLayout.PAGE_END);
 		
 		setUndecorated(true);
-		
-		getRootPane().setBorder(BorderFactory.createLineBorder(Utils.getColorStart().darker(), 1));
 
 		this.header.addMouseListener(new MouseAdapter() {
 	        public void mousePressed(MouseEvent e) {
@@ -224,6 +167,8 @@ public class MainWindow extends JFrame {
 	            setLocation(X, Y);
 	        }
 	    });
+	    
+	    updateUI();
 	    
 	}	
 
@@ -250,4 +195,66 @@ public class MainWindow extends JFrame {
 	    public void lostOwnership(Clipboard clipboard, Transferable contents) {}
 	  }
 
+		public void updateUI() {
+		
+			this.statusBar.setBackground(Theme.getColorStart());
+			
+			this.header.setTitle(Utils.getLabel("title"));
+			this.header.setIcon(Theme.getIcon("clipboard.png"));
+			this.header.setColorStart(Theme.getColorStart());
+			this.header.setColorEnd(Theme.getColorEnd());
+			
+			this.setForeground(Theme.getColorText());
+			this.setFont(Theme.getFontText());
+			this.setBackground(Theme.getColorBackground());
+			
+			this.btnClose.setIcon("close-24");
+			this.btnClose.setText(Utils.getLabel("close"));
+			this.btnClose.init();
+			
+			this.btnMinimize.setIcon("down-24");
+			this.btnMinimize.setText(Utils.getLabel("minimize"));
+			this.btnMinimize.init();
+			
+			this.btnSettings.setIcon("settings-24");
+			this.btnSettings.setText(Utils.getLabel("settings"));
+			this.btnSettings.init();
+			
+			this.btnAbout.setIcon("about-24");
+			this.btnAbout.setText(Utils.getLabel("about"));
+			this.btnAbout.init();
+			
+			this.btnDelete.setIcon("delete-24");
+			this.btnDelete.setText(Utils.getLabel("delete"));
+			this.btnDelete.init();
+			
+			this.list.setCellRenderer(new ClipboardRenderer());
+			this.list.setSelectionBackground(Theme.getColorStart());
+			
+			this.getRootPane().setBorder(BorderFactory.createLineBorder(Theme.getColorStart().darker(), 1));
+
+		}
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			if (e.getSource() == btnClose) {
+				System.exit(0);
+			} else if (e.getSource() == btnMinimize) {
+				setVisible(false);
+			}else if (e.getSource() == btnSettings) {
+				final SettingsDialog sd = new SettingsDialog();
+				sd.setLocationRelativeTo(null);
+				sd.setVisible(true);
+			}else if (e.getSource() == btnAbout) {
+				final AboutDialog ad = new AboutDialog();
+				ad.setLocationRelativeTo(null);
+				ad.setVisible(true);
+			}else if (e.getSource() == btnDelete) {
+				int selectedIndex = list.getSelectedIndex();
+	    	   if (selectedIndex != -1) {
+	    		   model.remove(selectedIndex);
+	    	   }
+			}
+			
+		}
 }

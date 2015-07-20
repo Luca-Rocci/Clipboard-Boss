@@ -1,8 +1,9 @@
 package it.rocci.clipboss.ui.component;
 
-import it.rocci.clipboss.utils.Utils;
+import it.rocci.clipboss.model.Theme;
 
 import java.awt.Cursor;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
@@ -17,7 +18,14 @@ public class Button extends JButton implements MouseListener {
 		super();
 		init();
 	}
-
+	
+	
+	public Button(ActionListener ai) {
+		super();
+		init();
+		addActionListener(ai);
+	}
+	
 	public Button(Action a) {
 		super(a);
 		init();
@@ -43,17 +51,16 @@ public class Button extends JButton implements MouseListener {
 		setRolloverEnabled(true);
 		setContentAreaFilled(false);
 		setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		setForeground(Utils.getColorText());
-		setFont(Utils.getFontText());
-		setBackground(Utils.getColorBackground());
+		setForeground(Theme.getColorText());
+		setFont(Theme.getFontText());
+		setBackground(Theme.getColorBackground());
 		addMouseListener(this);
 	}
 
 	public void setIcon(String strIcon) {
-		setIcon(Utils.getIcon(strIcon + ".png"));
-		setRolloverIcon(Utils.getIcon(strIcon + "-h.png"));
+		setIcon(Theme.getIcon(strIcon + ".png"));
+		setRolloverIcon(Theme.getIcon(strIcon + "-h.png"));
 	}
-
 
 	@Override
 	public void mouseClicked(MouseEvent e) { }
@@ -66,11 +73,11 @@ public class Button extends JButton implements MouseListener {
 
 	@Override
 	public void mouseEntered(MouseEvent e) {
-		setForeground(Utils.getColorTextHover());
+		setForeground(Theme.getColorTextHover());
 	}
 
 	@Override
 	public void mouseExited(MouseEvent e) {
-		setForeground(Utils.getColorText());
+		setForeground(Theme.getColorText());
 	}
 }

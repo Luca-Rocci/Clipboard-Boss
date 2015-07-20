@@ -1,6 +1,7 @@
 package it.rocci.clipboss.ui;
 
 import it.rocci.clipboss.MainApp;
+import it.rocci.clipboss.model.Theme;
 import it.rocci.clipboss.ui.component.Dialog;
 import it.rocci.clipboss.utils.Configuration;
 import it.rocci.clipboss.utils.Utils;
@@ -23,6 +24,7 @@ import java.util.Enumeration;
 import java.util.Locale;
 import java.util.logging.Level;
 
+import javax.sound.sampled.ReverbType;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -45,53 +47,68 @@ import javax.swing.event.ChangeListener;
 
 public class SettingsDialog extends Dialog implements ActionListener {
 
+	private JPanel panelUI;
+	private JPanel panelFunc;
+	private JLabel lblLocale;
+	private JLabel lblTheme;
+	private JLabel lblPolling;
+	private JLabel lblMaxItem;
+	private JCheckBox chkAutorun;
+
 	public SettingsDialog() {
 		super();
-		this.setTitle(Utils.getLabel("settings.title"));
-		this.setDescription(Utils.getLabel("settings.description"));
-		this.setIcon(Utils.getIcon("settings.png"));
 
 		final JPanel panelCenter = new JPanel();
-		panelCenter.setBackground(Utils.getColorBackground());
+		panelCenter.setBackground(Theme.getColorBackground());
 		panelCenter.setLayout(new BoxLayout(panelCenter, BoxLayout.PAGE_AXIS));
 		panelCenter.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
 		TitledBorder title = BorderFactory.createTitledBorder(Utils
 				.getLabel("settings.ui"));
-		final JPanel panelUI = new JPanel();
+		panelUI = new JPanel();
 		panelUI.setBorder(title);
 		panelUI.setOpaque(false);
 		panelUI.setLayout(new BoxLayout(panelUI, BoxLayout.PAGE_AXIS));
 
-		panelUI.add(getLocaleSettings("settings.ui.locale"));
+		panelUI.add(getLocaleSettings());
 
-		panelUI.add(getThemeSettings("settings.ui.theme"));
+		panelUI.add(getThemeSettings());
 
 		title = BorderFactory.createTitledBorder(Utils
 				.getLabel("settings.function"));
-		final JPanel panelFunc = new JPanel();
+		panelFunc = new JPanel();
 		panelFunc.setOpaque(false);
 		panelFunc.setBorder(title);
 		panelFunc.setLayout(new BoxLayout(panelFunc, BoxLayout.PAGE_AXIS));
-		
-		panelFunc.add(getNumberSettings("settings.function.maxitem",10,50,1)); 
-		panelFunc.add(getNumberSettings("settings.function.polling",200,10000,50)); 
-		panelFunc.add(getBooleanSettings("settings.function.autorun"));
+
+		lblPolling = new JLabel();
+		lblMaxItem = new JLabel();
+		chkAutorun = new JCheckBox();
+
+		panelFunc.add(getNumberSettings(lblMaxItem,"settings.function.maxitem",10,50,1)); 
+		panelFunc.add(getNumberSettings(lblPolling,"settings.function.polling",200,10000,50)); 
+		panelFunc.add(getBooleanSettings(chkAutorun,"settings.function.autorun"));
 		panelCenter.add(panelUI);
 		panelCenter.add(panelFunc);
 		panelCenter.add(Box.createVerticalGlue());
-		
-		JLabel label = new JLabel(Utils.getLabel("settings.note"));
-		this.footer.add(label, BorderLayout.LINE_START);
-		
+
+//		JLabel label = new JLabel(Utils.getLabel("settings.note"));
+//		this.footer.add(label, BorderLayout.LINE_START);
+
 		this.add(panelCenter, BorderLayout.CENTER);
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		super.actionPerformed(e);
 		if (e.getActionCommand().contains("settings.ui.")) {
 			final JComboBox cb = (JComboBox) e.getSource();
 			final JLabel lbl = (JLabel) cb.getSelectedItem();
 			Configuration.setString(e.getActionCommand(), lbl.getToolTipText());
+			Theme.cleanThemeInfo();
+			Utils.cleanLangBundle();
+			invalidate();
+			updateUI();
+
 		} else if (e.getActionCommand().contains("settings.function.")) {
 			final JCheckBox chk = (JCheckBox) e.getSource();
 			Configuration.setString(e.getActionCommand(), String.valueOf(chk.isSelected()));
@@ -106,7 +123,8 @@ public class SettingsDialog extends Dialog implements ActionListener {
 		}
 	}
 
-	private JPanel getLocaleSettings(String key) {
+	private JPanel getLocaleSettings() {
+		String key = "settings.ui.locale";
 		String value = Configuration.getString(key);
 
 		JPanel locale = new JPanel();
@@ -117,10 +135,10 @@ public class SettingsDialog extends Dialog implements ActionListener {
 		locale.setMinimumSize(new Dimension(200,30));
 		locale.setOpaque(false);
 
-		JLabel label = new JLabel(Utils.getLabel(key));
-		label.setPreferredSize(new Dimension(200, 26));
-		label.setOpaque(false);
-		
+		lblLocale = new JLabel(Utils.getLabel(key));
+		lblLocale.setPreferredSize(new Dimension(200, 26));
+		lblLocale.setOpaque(false);
+
 		JComboBox combo = new JComboBox();
 		combo.setPreferredSize(new Dimension(70, 26));
 		combo.setRenderer(new LabelListRenderer());
@@ -129,23 +147,24 @@ public class SettingsDialog extends Dialog implements ActionListener {
 			final JLabel themeItem = new JLabel(l.getDisplayLanguage(), Utils.getIcon(l.getLanguage() +".png"),SwingConstants.LEFT);
 			themeItem.setToolTipText(l.getLanguage());
 			combo.addItem(themeItem);
-					if (value.equals(l.getLanguage())) {
-						combo.setSelectedItem(themeItem);
-					}
+			if (value.equals(l.getLanguage())) {
+				combo.setSelectedItem(themeItem);
+			}
 		}
 
 		combo.addActionListener(this);
 		combo.setActionCommand(key);
-		
-		locale.add(label);
+
+		locale.add(lblLocale);
 		locale.add(Box.createHorizontalGlue());
 		locale.add(combo);
 		return locale;
 	}
-	
-	private JPanel getThemeSettings(String key) {
+
+	private JPanel getThemeSettings() {
+		String key = "settings.ui.theme";
 		String value = Configuration.getString(key);
-		
+
 		JPanel theme = new JPanel();
 		theme.setLayout(new BoxLayout(theme, BoxLayout.LINE_AXIS));
 		theme.setBorder(BorderFactory.createEmptyBorder(2, 5, 5, 5));
@@ -153,43 +172,44 @@ public class SettingsDialog extends Dialog implements ActionListener {
 		theme.setMaximumSize(new Dimension(1000,30));
 		theme.setMinimumSize(new Dimension(200,30));
 		theme.setOpaque(false);
-		
-		JLabel label = new JLabel(Utils.getLabel(key));
-		label.setPreferredSize(new Dimension(200, 26));
-		label.setOpaque(false);
-		
+
+		lblTheme = new JLabel(Utils.getLabel(key));
+		lblTheme.setPreferredSize(new Dimension(200, 26));
+		lblTheme.setOpaque(false);
+
 		JComboBox combo = new JComboBox();
 		combo.setPreferredSize(new Dimension(70, 26));
 		combo.setRenderer(new LabelListRenderer());
-		
+
 		File themeList = new File("Theme");
-		
+
 		for (File themeDir : themeList.listFiles()) {
-		    if (themeDir.isDirectory()) {
-		    	File themeInfo = new File("Theme" + Utils.FILE_SEPARATOR + themeDir.getName() + Utils.FILE_SEPARATOR + "Theme.info");
-		    	if (themeInfo.exists() && themeInfo.isFile()) {
-		    		final JLabel themeItem = new JLabel(themeDir.getName());
-		    		themeItem.setToolTipText(themeDir.getName());
+			if (themeDir.isDirectory()) {
+				File themeInfo = new File("Theme" + Utils.FILE_SEPARATOR + themeDir.getName() + Utils.FILE_SEPARATOR + "Theme.info");
+				if (themeInfo.exists() && themeInfo.isFile()) {
+					final JLabel themeItem = new JLabel(themeDir.getName());
+					themeItem.setToolTipText(themeDir.getName());
 					combo.addItem(themeItem);
 					if (value.equals(themeDir.getName())) {
 						combo.setSelectedItem(themeItem);
 					}
-		    	}
-		    }
+				}
+			}
 		}
 
 		combo.addActionListener(this);
 		combo.setActionCommand(key);
-		
-		theme.add(label);
+
+		theme.add(lblTheme);
 		theme.add(Box.createHorizontalGlue());
 		theme.add(combo);
 		return theme;
 	}
-	
-	private JPanel getBooleanSettings(String key) {
+
+	private JPanel getBooleanSettings(JCheckBox chkbox, String key) {
+
 		String value = Configuration.getString(key);
-		
+
 		JPanel function = new JPanel();
 		function.setLayout(new BoxLayout(function, BoxLayout.LINE_AXIS));
 		function.setBorder(BorderFactory.createEmptyBorder(2, 5, 5, 5));
@@ -197,24 +217,24 @@ public class SettingsDialog extends Dialog implements ActionListener {
 		function.setMaximumSize(new Dimension(1000,30));
 		function.setMinimumSize(new Dimension(200,30));
 		function.setOpaque(false);
-		
-		JCheckBox chkbox = new JCheckBox(Utils.getLabel(key));
+
+		chkbox.setText(Utils.getLabel(key));
 		chkbox.setPreferredSize(new Dimension(300, 26));
 		chkbox.setOpaque(false);
-		
+
 		chkbox.setSelected(Boolean.valueOf(value));
 		chkbox.addActionListener(this);
 		chkbox.setActionCommand(key);
-		
+
 		function.add(chkbox);
 		function.add(Box.createHorizontalGlue());
-		
+
 		return function;
 	}
-	
-	private JPanel getNumberSettings(final String key,int min, int max, int step) {
+
+	private JPanel getNumberSettings(JLabel label, final String key,int min, int max, int step) {
 		String value = Configuration.getString(key);
-		
+
 		JPanel theme = new JPanel();
 		theme.setLayout(new BoxLayout(theme, BoxLayout.LINE_AXIS));
 		theme.setBorder(BorderFactory.createEmptyBorder(2, 5, 5, 5));
@@ -222,22 +242,21 @@ public class SettingsDialog extends Dialog implements ActionListener {
 		theme.setMaximumSize(new Dimension(1000,30));
 		theme.setMinimumSize(new Dimension(200,30));
 		theme.setOpaque(false);
-		
-		JLabel label = new JLabel(Utils.getLabel(key));
+
+		label.setText(Utils.getLabel(key));
 		label.setPreferredSize(new Dimension(200, 26));
 		label.setOpaque(false);
-		
 		SpinnerModel intModel = new SpinnerNumberModel(min,min,max,step);
 		JSpinner spinner = new JSpinner(intModel);
 		spinner.setEditor(new JSpinner.NumberEditor(spinner, "#"));
 		spinner.setPreferredSize(new Dimension(70, 26));
 		intModel.setValue(Integer.valueOf(value));
 		intModel.addChangeListener(new ChangeListener() {
-			
+
 			@Override
 			public void stateChanged(ChangeEvent e) {
 				Configuration.setString(key,String.valueOf(((SpinnerModel)e.getSource()).getValue()));
-				
+
 			}
 		});
 
@@ -246,7 +265,35 @@ public class SettingsDialog extends Dialog implements ActionListener {
 		theme.add(spinner);
 		return theme;
 	}
-	
+
+	@Override
+	public void updateUI() {
+		super.updateUI();
+		this.setTitle(Utils.getLabel("settings.title"));
+		this.setDescription(Utils.getLabel("settings.description"));
+		this.setIcon(Utils.getIcon("settings.png"));
+
+		TitledBorder title = BorderFactory.createTitledBorder(Utils
+				.getLabel("settings.ui"));
+		panelUI.setBorder(title);
+
+		title = BorderFactory.createTitledBorder(Utils
+				.getLabel("settings.function"));
+		panelFunc.setBorder(title);
+
+		lblLocale.setText(Utils
+				.getLabel("settings.ui.locale"));
+		lblTheme.setText(Utils
+				.getLabel("settings.ui.theme"));
+		lblPolling.setText(Utils
+				.getLabel("settings.function.polling"));
+		lblMaxItem.setText(Utils
+				.getLabel("settings.function.maxitem"));
+		chkAutorun.setText(Utils
+				.getLabel("settings.function.autorun"));
+
+	}
+
 	public static class LabelListRenderer extends DefaultListCellRenderer {
 
 		@Override
@@ -260,7 +307,7 @@ public class SettingsDialog extends Dialog implements ActionListener {
 				label.setIcon(((JLabel) value).getIcon());
 			}
 			if (isSelected) {
-				label.setForeground(Utils.getColorTextHover());
+				label.setForeground(Theme.getColorTextHover());
 			}
 			label.setOpaque(true);
 			this.setOpaque(true);

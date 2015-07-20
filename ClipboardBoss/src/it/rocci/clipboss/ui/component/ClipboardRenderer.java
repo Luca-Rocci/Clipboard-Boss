@@ -1,6 +1,7 @@
 package it.rocci.clipboss.ui.component;
 
 import it.rocci.clipboss.model.ClipboardItem;
+import it.rocci.clipboss.model.Theme;
 import it.rocci.clipboss.utils.Utils;
 
 import java.awt.BorderLayout;
@@ -33,13 +34,13 @@ public class ClipboardRenderer extends JPanel implements ListCellRenderer {
 		lblType = new JLabel();
 
 		lblTime = new JLabel();
-		lblTime.setIcon(Utils.getIcon("time-24.png"));
+		lblTime.setIcon(Theme.getIcon("time-24.png"));
 
 		lblSize = new JLabel();
-		lblSize.setIcon(Utils.getIcon("size-24.png"));	
+		lblSize.setIcon(Theme.getIcon("size-24.png"));	
 
 		pnlTop = new JPanel(new FlowLayout(FlowLayout.LEFT));
-		pnlTop.setBackground(Utils.getColorEnd().darker());
+		pnlTop.setBackground(Theme.getColorEnd().darker());
 		pnlTop.add(lblTime);
 		pnlTop.add(lblType);
 		pnlTop.add(lblSize);
@@ -65,7 +66,7 @@ public class ClipboardRenderer extends JPanel implements ListCellRenderer {
 		switch (ci.getType()) {
 		case 0:
 			lblType.setText(Utils.getLabel("text"));
-			lblType.setIcon(Utils.getIcon("text-24.png"));
+			lblType.setIcon(Theme.getIcon("text-24.png"));
 			String strOrig = (String)ci.getValue();
 			lblSize.setText(strOrig.length() + " " + Utils.getLabel("char"));
 			if (strOrig.length() > 400) {
@@ -75,7 +76,7 @@ public class ClipboardRenderer extends JPanel implements ListCellRenderer {
 			break;
 		case 1:
 			lblType.setText(Utils.getLabel("image"));
-			lblType.setIcon(Utils.getIcon("image-24.png"));
+			lblType.setIcon(Theme.getIcon("image-24.png"));
 
 			Image imgOrig = ((Image)ci.getValue());
 			lblSize.setText(imgOrig.getWidth(null) + " x " + imgOrig.getHeight(null) + " px");

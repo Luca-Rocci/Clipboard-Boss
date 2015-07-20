@@ -1,5 +1,6 @@
 package it.rocci.clipboss.ui.component;
 
+import it.rocci.clipboss.model.Theme;
 import it.rocci.clipboss.utils.Utils;
 
 import java.awt.BorderLayout;
@@ -30,22 +31,25 @@ public class NotificationPanel extends JDialog {
 		this.header.setDimension(new Dimension(100, 32));
 		this.setLayout(new BorderLayout());
 
-		this.setForeground(Utils.getColorText());
-		this.setFont(Utils.getFontText());
-
-		this.header.setColorStart(Utils.getColorStart());
-		this.header.setColorEnd(Utils.getColorEnd());
 		this.add(this.header, BorderLayout.PAGE_START);
 		
-		getRootPane().setBorder(BorderFactory.createLineBorder(Utils.getColorStart().darker(), 1));
-	
 	        setUndecorated( true );
 	        setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
-	        setBackground(Utils.getColorBackground());
 	        pack();
 	        setSize(new Dimension(240, 70));
 	        setAlwaysOnTop(true);
 
+	}
+		
+	public void updateUI() {
+		
+		this.header.setTitle(Utils.getLabel("title"));
+		this.header.setColorStart(Theme.getColorStart());
+		this.header.setColorEnd(Theme.getColorEnd());
+		this.setForeground(Theme.getColorText());
+		this.setFont(Theme.getFontText());
+		this.setBackground(Theme.getColorBackground());
+		this.getRootPane().setBorder(BorderFactory.createLineBorder(Theme.getColorStart().darker(), 1));
 	}
 
 	public void setVisible(MouseEvent e) {
@@ -74,6 +78,12 @@ public class NotificationPanel extends JDialog {
 
         setLocation(pos);
         setVisible(true);
+	}
+	
+	@Override
+	public void setVisible(boolean b) {
+        updateUI();
+		super.setVisible(b);
 	}
 	
 	 public static Rectangle getScreenBoundsAt(Point pos) {
@@ -122,7 +132,7 @@ public class NotificationPanel extends JDialog {
 	    	l.setBorder(BorderFactory.createEmptyBorder(3, 3, 3, 3));
 	    	l.setAlignmentX(CENTER_ALIGNMENT);
 	    	l.setAlignmentY(CENTER_ALIGNMENT);
-	    	l.setBackground(Utils.getColorBackground());
+	    	l.setBackground(Theme.getColorBackground());
 	    	l.setOpaque(true);
 	    	np.add(l, BorderLayout.CENTER);
 	    	np.setVisible(true);

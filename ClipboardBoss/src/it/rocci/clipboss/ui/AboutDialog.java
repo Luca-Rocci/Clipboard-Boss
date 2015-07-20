@@ -1,5 +1,6 @@
 package it.rocci.clipboss.ui;
 
+import it.rocci.clipboss.model.Theme;
 import it.rocci.clipboss.ui.component.Button;
 import it.rocci.clipboss.ui.component.Dialog;
 import it.rocci.clipboss.utils.Utils;
@@ -37,7 +38,7 @@ public class AboutDialog extends Dialog {
         aboutText.setEditable(false);
         aboutText.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         aboutText.setText(aText);
-        aboutText.setBackground(Utils.getColorBackground());
+        aboutText.setBackground(Theme.getColorBackground());
 		
 		final Button visit = new Button();
 		visit.setText(Utils.getLabel("about.visit"));

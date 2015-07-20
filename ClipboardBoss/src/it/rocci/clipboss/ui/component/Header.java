@@ -1,5 +1,6 @@
 package it.rocci.clipboss.ui.component;
 
+import it.rocci.clipboss.model.Theme;
 import it.rocci.clipboss.utils.Utils;
 
 import java.awt.Color;
@@ -104,9 +105,9 @@ public class Header extends JComponent {
 
 		g2d.setPaint(oldPaint);
 
-		g2d.setFont(Utils.getFontTitle());
+		g2d.setFont(Theme.getFontTitle());
 		g2d.drawString(this.strTitle, 5, 22);
-		g2d.setFont(Utils.getFontText());
+		g2d.setFont(Theme.getFontText());
 		g2d.drawString(this.strDescription, 6, 35);
 
 		if (this.imageIcon != null) {

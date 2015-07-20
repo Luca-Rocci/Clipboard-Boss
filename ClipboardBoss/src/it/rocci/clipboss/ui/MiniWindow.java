@@ -1,6 +1,7 @@
 package it.rocci.clipboss.ui;
 
 import it.rocci.clipboss.model.ClipboardItem;
+import it.rocci.clipboss.model.Theme;
 import it.rocci.clipboss.ui.MainWindow.ImageTransferable;
 import it.rocci.clipboss.ui.component.Button;
 import it.rocci.clipboss.ui.component.ClipboardRendererMini;
@@ -14,6 +15,8 @@ import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -24,61 +27,39 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
-public class MiniWindow extends NotificationPanel {
+public class MiniWindow extends NotificationPanel implements ActionListener {
+
+	private Button btnMinimize;
+	private Button btnMassimize;
+	private MainWindow main;
+	private JList list;
 
 	public MiniWindow(final MainWindow main) {
+		
 		super();
+
+		btnMinimize= new Button(this);	
+		btnMassimize= new Button(this);
+
+		this.main = main;
 		
         setSize(new Dimension(240, 200));
-		
-		JPanel pnlButton = new JPanel(new FlowLayout(FlowLayout.LEFT));
-		pnlButton.setBorder(new EmptyBorder(1, 1, 1, 1));
-		pnlButton.setOpaque(false);
-
-		Button btnMinimize= new Button();
-		btnMinimize.setToolTipText(Utils.getLabel("minimize"));
-		btnMinimize.setIcon("down-24");
-		btnMinimize.addMouseListener(new MouseAdapter()  
-		{  
-		    public void mouseClicked(MouseEvent e)  
-		    {  
-		    	setVisible(false);
-		    }  
-		}); 
-//		if (Utils.isMac()) {
-//			btnMinimize.setVisible(false);
-//		}
-		
-		Button btnMassimize= new Button();
-		btnMassimize.setToolTipText(Utils.getLabel("massimize"));
-		btnMassimize.setIcon("up-24");
-		btnMassimize.addMouseListener(new MouseAdapter()  
-		{  
-		    public void mouseClicked(MouseEvent e)  
-		    {  
-//		    	if (!Utils.isMac()) {
-		    		setVisible(false);
-//		    	}
-		    	main.setVisible(true);
-		    }  
-		}); 
 
 		this.header.setLayout(new FlowLayout(FlowLayout.RIGHT));
 		
 		this.header.add(btnMassimize);
 		this.header.add(btnMinimize);
 		
-		final JList list = new JList(main.getModel());
-		list.setCellRenderer(new ClipboardRendererMini());
-		list.setSelectionBackground(Utils.getColorStart());
+		list = new JList(main.getModel());
 		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		list.addMouseListener(new MouseAdapter() {
-			
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				if (e.getButton() == MouseEvent.BUTTON3) {
-					int selectedIndex = list.getSelectedIndex();
+		list.addListSelectionListener(new ListSelectionListener() {
+		      public void valueChanged(ListSelectionEvent evt) {
+		          if (evt.getValueIsAdjusting())
+		            return;
+		          int selectedIndex = list.getSelectedIndex();
 		    	   if (selectedIndex != -1) {
 		    		   ClipboardItem ci = (ClipboardItem) main.getModel().get(selectedIndex);
 		    		   if (ci.getType() == 0) {
@@ -92,11 +73,8 @@ public class MiniWindow extends NotificationPanel {
 					        clip.setContents(selection,selection);
 		    		   }
 		    	   }
-					
-				}
-				
-			}
-		});
+		        }
+		      });
 		
 		final JScrollPane spCenter = new JScrollPane(list);
 		spCenter.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
@@ -105,6 +83,32 @@ public class MiniWindow extends NotificationPanel {
 		spCenter.validate();
 		
 		this.add(spCenter, BorderLayout.CENTER);
+
+	}
+	
+@Override
+public void updateUI() {
+	super.updateUI();
+
+		btnMinimize.setToolTipText(Utils.getLabel("minimize"));
+		btnMinimize.setIcon("down-24");
+
+		btnMassimize.setToolTipText(Utils.getLabel("massimize"));
+		btnMassimize.setIcon("up-24");
+		
+		list.setCellRenderer(new ClipboardRendererMini());
+		list.setSelectionBackground(Theme.getColorStart());
+
+}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		if (e.getSource() == btnMinimize) {
+			setVisible(false);
+		} else if (e.getSource() == btnMassimize) {
+			setVisible(false);
+	    	main.setVisible(true);
+		}
 	}
 
 }

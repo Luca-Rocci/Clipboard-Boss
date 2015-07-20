@@ -59,10 +59,6 @@ public class MainApp {
 			  }
 			 });
 			
-
-			
-			
-			
 			trayIcon=new TrayIcon(image, Utils.getLabel("title"),menu);
 			trayIcon.setImageAutoSize(true);
 
