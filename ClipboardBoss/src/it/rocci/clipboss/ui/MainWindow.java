@@ -168,10 +168,14 @@ public class MainWindow extends JFrame implements ActionListener {
 	        }
 	    });
 	    
-	    updateUI();
-	    
 	}	
 
+	@Override
+	public void setVisible(boolean b) {
+    	updateUI();
+		super.setVisible(b);
+	}
+	
 	 static class ImageTransferable implements Transferable, ClipboardOwner
 	  {
 	    Image image;

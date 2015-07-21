@@ -1,7 +1,9 @@
 package it.rocci.clipboss;
 
+import it.rocci.clipboss.ui.AboutDialog;
 import it.rocci.clipboss.ui.MainWindow;
 import it.rocci.clipboss.ui.MiniWindow;
+import it.rocci.clipboss.ui.SettingsDialog;
 import it.rocci.clipboss.ui.component.NotificationPanel;
 import it.rocci.clipboss.utils.ClipboardMonitor;
 import it.rocci.clipboss.utils.Utils;
@@ -18,6 +20,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseWheelEvent;
 import java.util.logging.Level;
 
 import javax.swing.JFrame;
@@ -50,25 +53,57 @@ public class MainApp {
 			Utils.logger.log(Level.INFO, "System tray supported");
 			tray=SystemTray.getSystemTray();
 
-//		PopupMenu menu = new PopupMenu();
-//			MenuItem item1 = new MenuItem("Exit");
-//			menu.add(item1);
-//			item1.addActionListener(new ActionListener() {
-//			 public void actionPerformed(ActionEvent e) {
-//			 System.exit(0);
-//			  }
-//			 });
-			
-			trayIcon=new TrayIcon(image, Utils.getLabel("title"));
+			PopupMenu menu = new PopupMenu();
+			MenuItem item = new MenuItem(Utils.getLabel("close"));
+			item.addActionListener(new ActionListener() {
+			 public void actionPerformed(ActionEvent e) {
+				 tray.remove(trayIcon);
+			 System.exit(0);
+			  }
+			 });
+			menu.add(item);
+			menu.addSeparator();
+			item = new MenuItem(Utils.getLabel("open"));
+			item.addActionListener(new ActionListener() {
+			 public void actionPerformed(ActionEvent e) {
+				 mainWindow.setVisible(true);
+			  }
+			 });
+			menu.add(item);
+			item = new MenuItem(Utils.getLabel("about"));
+			item.addActionListener(new ActionListener() {
+			 public void actionPerformed(ActionEvent e) {
+				 final AboutDialog ad = new AboutDialog();
+					ad.setLocationRelativeTo(null);
+					ad.setVisible(true);
+			  }
+			 });
+			menu.add(item);
+			item = new MenuItem(Utils.getLabel("settings"));
+			item.addActionListener(new ActionListener() {
+			 public void actionPerformed(ActionEvent e) {
+				 final SettingsDialog sd = new SettingsDialog();
+					sd.setLocationRelativeTo(null);
+					sd.setVisible(true);
+			  }
+			 });
+			menu.add(item);
+					
+			trayIcon=new TrayIcon(image, Utils.getLabel("title"), menu);
 			trayIcon.setImageAutoSize(true);
 
 			trayIcon.addMouseListener(new MouseAdapter() {
+				
 				@Override
 				public void mouseClicked(MouseEvent e) {
-					if (!mainWindow.isVisible()) {
-						miniWindow.setVisible(e);
+					super.mouseClicked(e);
+					if(e.getButton() == MouseEvent.BUTTON1) {
+						if (!mainWindow.isVisible()) {
+							miniWindow.setVisible(e);
+						}
 					}
 				}
+				
 			});
 		}else{
 			Utils.logger.log(Level.WARNING, "System tray not supported");
@@ -79,7 +114,6 @@ public class MainApp {
 		} catch (AWTException ex) {
 			Utils.logger.log(Level.WARNING, "Unable to add system tray ");
 			mainWindow.setVisible(true);
-//			mainWindow.setState(mainWindow.ICONIFIED);
 		}
 
 		Thread monitorThread = new Thread(new ClipboardMonitor(mainWindow.getModel()));

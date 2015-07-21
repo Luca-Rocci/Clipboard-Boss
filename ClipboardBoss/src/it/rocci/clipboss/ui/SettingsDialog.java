@@ -45,7 +45,7 @@ import javax.swing.border.TitledBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-public class SettingsDialog extends Dialog implements ActionListener {
+public class SettingsDialog extends Dialog {
 
 	private JPanel panelUI;
 	private JPanel panelFunc;

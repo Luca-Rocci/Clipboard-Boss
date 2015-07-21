@@ -21,11 +21,11 @@ import javax.swing.text.html.HTMLEditorKit;
 
 public class AboutDialog extends Dialog {
 
+	private Button btnVisit;
+	private Button btnDonate;
+
 	public AboutDialog() {
 		super();
-		this.setTitle(Utils.getLabel("about.title"));
-		this.setDescription(Utils.getLabel("about.description"));
-		this.setIcon(Utils.getIcon("about.png"));
 
 		String aText = "<center>"
                 + "<h1>Clipboard Boss</h1>\n"
@@ -40,51 +40,57 @@ public class AboutDialog extends Dialog {
         aboutText.setText(aText);
         aboutText.setBackground(Theme.getColorBackground());
 		
-		final Button visit = new Button();
-		visit.setText(Utils.getLabel("about.visit"));
-		visit.setIcon("www-24");
-		visit.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent event) {
-				final Desktop desktop = Desktop.isDesktopSupported() ? Desktop
-						.getDesktop() : null;
-				if ((desktop != null)
-						&& desktop.isSupported(Desktop.Action.BROWSE)) {
-					try {
-						desktop.browse(new URI("http://luca-rocci.github.io/Clipboard-Boss/"));
-						AboutDialog.this.dispose();
-					} catch (final Exception e) {
-						e.printStackTrace();
-					}
-				}
-			}
-		});
-		
-		final Button donate = new Button();
-		donate.setText(Utils.getLabel("about.donate"));
-		donate.setIcon("donate-24");
-		donate.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent event) {
-				final Desktop desktop = Desktop.isDesktopSupported() ? Desktop
-						.getDesktop() : null;
-				if ((desktop != null)
-						&& desktop.isSupported(Desktop.Action.BROWSE)) {
-					try {
-						desktop.browse(new URI("https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=AUNW694K5GQ8L&lc=IT&item_name=Clipboard%20Boss&item_number=supporter&currency_code=EUR&bn=PP%2dDonationsBF%3abtn_donate_SM%2egif%3aNonHosted"));
-						AboutDialog.this.dispose();
-					} catch (final Exception e) {
-						e.printStackTrace();
-					}
-				}
-			}
-		});
+		btnVisit = new Button(this);	
+		btnDonate = new Button(this);
 
-		this.footer.add(visit, BorderLayout.LINE_START);
-		this.footer.add(donate, BorderLayout.CENTER);
+		this.footer.add(btnVisit, BorderLayout.LINE_START);
+		this.footer.add(btnDonate, BorderLayout.CENTER);
 
 		this.add(aboutText, BorderLayout.CENTER);
 
+	}
+	
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		super.actionPerformed(e);
+		if (e.getSource() == btnDonate) {
+			final Desktop desktop = Desktop.isDesktopSupported() ? Desktop
+					.getDesktop() : null;
+			if ((desktop != null)
+					&& desktop.isSupported(Desktop.Action.BROWSE)) {
+				try {
+					desktop.browse(new URI("https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=AUNW694K5GQ8L&lc=IT&item_name=Clipboard%20Boss&item_number=supporter&currency_code=EUR&bn=PP%2dDonationsBF%3abtn_donate_SM%2egif%3aNonHosted"));
+					AboutDialog.this.dispose();
+				} catch (final Exception ex) {
+					ex.printStackTrace();
+				}
+			}
+		} else if (e.getSource() == btnVisit) {
+			final Desktop desktop = Desktop.isDesktopSupported() ? Desktop
+					.getDesktop() : null;
+			if ((desktop != null)
+					&& desktop.isSupported(Desktop.Action.BROWSE)) {
+				try {
+					desktop.browse(new URI("http://luca-rocci.github.io/Clipboard-Boss/"));
+					AboutDialog.this.dispose();
+				} catch (final Exception ex) {
+					ex.printStackTrace();
+				}
+			}
+		}
+	}
+	@Override
+	public void updateUI() {
+		super.updateUI();
+		this.setTitle(Utils.getLabel("about.title"));
+		this.setDescription(Utils.getLabel("about.description"));
+		this.setIcon(Utils.getIcon("about.png"));
+		
+		btnVisit.setText(Utils.getLabel("about.visit"));
+		btnVisit.setIcon("www-24");
+		
+		btnDonate.setText(Utils.getLabel("about.donate"));
+		btnDonate.setIcon("donate-24");
 	}
 
 }
