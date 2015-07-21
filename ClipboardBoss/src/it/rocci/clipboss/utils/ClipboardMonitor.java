@@ -43,6 +43,9 @@ public class ClipboardMonitor implements Runnable {
 			} catch (InterruptedException ex) {
 			}
 			getContents();
+			if ( currentContent == null || currentContent == null) {
+				continue;
+			}
 			if (previousFlavor != null && previousFlavor.equals(currentFlavor)) {
 				if(previousFlavor.equals(DataFlavor.stringFlavor) && !previousContent.equals(currentContent)) {
 					previousContent = currentContent;
@@ -84,6 +87,15 @@ public class ClipboardMonitor implements Runnable {
 
 			if (content == null) return;
 
+			Utils.logger.log(Level.INFO, "content " + content.toString());
+			Utils.logger.log(Level.INFO, "contentf " + content.getTransferDataFlavors());
+			Utils.logger.log(Level.INFO, "contentfl " + content.getTransferDataFlavors().length);
+			for (DataFlavor d : content.getTransferDataFlavors()) {
+				Utils.logger.log(Level.INFO, "conten  s tf " + d.toString());
+				Utils.logger.log(Level.INFO, "conten  s tf " + d.getMimeType());
+			}
+			
+			
 			if(content.isDataFlavorSupported(DataFlavor.stringFlavor)) {
 				currentContent = clipboard.getData(DataFlavor.stringFlavor);
 				currentFlavor = DataFlavor.stringFlavor;

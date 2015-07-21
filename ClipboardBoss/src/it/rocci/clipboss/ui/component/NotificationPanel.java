@@ -5,6 +5,7 @@ import it.rocci.clipboss.utils.Utils;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.EventQueue;
 import java.awt.GraphicsConfiguration;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
@@ -50,6 +51,7 @@ public class NotificationPanel extends JDialog {
 		this.setFont(Theme.getFontText());
 		this.setBackground(Theme.getColorBackground());
 		this.getRootPane().setBorder(BorderFactory.createLineBorder(Theme.getColorStart().darker(), 1));
+        pack();
 	}
 
 	public void setVisible(MouseEvent e) {
@@ -125,7 +127,8 @@ public class NotificationPanel extends JDialog {
 	        return device;
 	    }
 	    
-	    public static void showMessage(String message, int time) {
+	    public static void showMessage(final String message, final int time) {
+	    	
 	    	final NotificationPanel np = new NotificationPanel();
 	    	np.setLocationRelativeTo(null);
 	    	JLabel l = new JLabel(message);
@@ -141,6 +144,7 @@ public class NotificationPanel extends JDialog {
 			} catch (InterruptedException e) { }
 	    	np.setVisible(false);
 	    	np.dispose();
+			
 	    }
 
 }

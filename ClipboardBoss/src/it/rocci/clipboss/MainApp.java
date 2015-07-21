@@ -50,16 +50,16 @@ public class MainApp {
 			Utils.logger.log(Level.INFO, "System tray supported");
 			tray=SystemTray.getSystemTray();
 
-		PopupMenu menu = new PopupMenu();
-			MenuItem item1 = new MenuItem("Exit");
-			menu.add(item1);
-			item1.addActionListener(new ActionListener() {
-			 public void actionPerformed(ActionEvent e) {
-			 System.exit(0);
-			  }
-			 });
+//		PopupMenu menu = new PopupMenu();
+//			MenuItem item1 = new MenuItem("Exit");
+//			menu.add(item1);
+//			item1.addActionListener(new ActionListener() {
+//			 public void actionPerformed(ActionEvent e) {
+//			 System.exit(0);
+//			  }
+//			 });
 			
-			trayIcon=new TrayIcon(image, Utils.getLabel("title"),menu);
+			trayIcon=new TrayIcon(image, Utils.getLabel("title"));
 			trayIcon.setImageAutoSize(true);
 
 			trayIcon.addMouseListener(new MouseAdapter() {
@@ -90,9 +90,7 @@ public class MainApp {
 
 
 	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			@Override
-			public void run() {
+	
 				try {
 					UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 				} catch (Exception ex) {
@@ -100,8 +98,6 @@ public class MainApp {
 				}
 				new MainApp();
 				NotificationPanel.showMessage(Utils.getLabel("start"), 2500);
-			}
-		});
 	}
 
 }
