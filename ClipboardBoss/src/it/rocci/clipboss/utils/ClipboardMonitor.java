@@ -46,6 +46,7 @@ public class ClipboardMonitor implements Runnable {
 			if ( currentContent == null || currentContent == null) {
 				continue;
 			}
+			
 			if (previousFlavor != null && previousFlavor.equals(currentFlavor)) {
 				if(previousFlavor.equals(DataFlavor.stringFlavor) && !previousContent.equals(currentContent)) {
 					previousContent = currentContent;
@@ -69,6 +70,7 @@ public class ClipboardMonitor implements Runnable {
 	private void hasChanged() {
 		Utils.logger.log(Level.INFO, "Clipboard content updated");
 		if(previousFlavor.equals(DataFlavor.stringFlavor)) {
+			model.
 			model.add(0,new ClipboardItem(0,previousContent,new Date()));
 		} 
 		else if (previousFlavor.equals(DataFlavor.imageFlavor)) {

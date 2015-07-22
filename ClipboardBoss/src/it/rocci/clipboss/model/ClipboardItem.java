@@ -4,7 +4,7 @@ import java.util.Date;
 
 import javax.swing.ImageIcon;
 
-public class ClipboardItem {
+public class ClipboardItem implements Comparable<ClipboardItem>{
 	
 	private int type;
 	private Object value;
@@ -39,6 +39,12 @@ public class ClipboardItem {
 	@Override
 	public String toString() {
 		return "ClipboardItem [type=" + type + ", date=" + date + "]";
+	}
+
+	@Override
+	public int compareTo(ClipboardItem ci) {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
 	
