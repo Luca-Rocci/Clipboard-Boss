@@ -1,10 +1,15 @@
 package it.rocci.clipboss.model;
 
+import it.rocci.clipboss.utils.Utils;
+
+import java.awt.Image;
+import java.awt.datatransfer.DataFlavor;
+import java.awt.image.BufferedImage;
 import java.util.Date;
 
 import javax.swing.ImageIcon;
 
-public class ClipboardItem implements Comparable<ClipboardItem>{
+public class ClipboardItem {
 	
 	private int type;
 	private Object value;
@@ -42,9 +47,27 @@ public class ClipboardItem implements Comparable<ClipboardItem>{
 	}
 
 	@Override
-	public int compareTo(ClipboardItem ci) {
-		// TODO Auto-generated method stub
-		return 0;
+	public boolean equals(Object obj) {
+		ClipboardItem o = (ClipboardItem) obj;
+		
+		if ( o == null) {
+			return false;
+		}
+
+		if (o.getType() == getType()) {
+			if(o.getType() == 0 && o.getValue().equals(getValue())) {
+				return true;
+			} else if(o.getType() == 1) {
+				BufferedImage b1 = Utils.convertImage((Image)getValue());
+				BufferedImage b2 = Utils.convertImage((Image)o.getValue());
+				if(Utils.bufferedImageEquals(b1,b2)) {
+					return true;
+				}
+			}
+		} else {
+			return false;
+		}
+		return false;
 	}
 
 	

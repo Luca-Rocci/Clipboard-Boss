@@ -1,6 +1,7 @@
 package it.rocci.clipboss.ui;
 
 import it.rocci.clipboss.model.ClipboardItem;
+import it.rocci.clipboss.model.ClipboardList;
 import it.rocci.clipboss.model.Theme;
 import it.rocci.clipboss.ui.component.Button;
 import it.rocci.clipboss.ui.component.ClipboardRenderer;
@@ -51,7 +52,7 @@ public class MainWindow extends JFrame implements ActionListener {
 	private static final long serialVersionUID = 1111111100000000111L;
 	private final StatusBar statusBar;
 	private final Header header;
-	private ListModel<ClipboardItem> model;
+	private ClipboardList model;
 	private Point initialClick;
 	private JList list;
 	private Button btnClose;
@@ -60,7 +61,7 @@ public class MainWindow extends JFrame implements ActionListener {
 	private Button btnAbout;
 	private Button btnDelete;
 
-	public DefaultListModel getModel() {
+	public ClipboardList getModel() {
 		return model;
 	}
 
@@ -108,33 +109,7 @@ public class MainWindow extends JFrame implements ActionListener {
 		
 		this.setLayout(new BorderLayout());
 
-		model = new ListModel<ClipboardItem>() {
-
-			@Override
-			public void addListDataListener(ListDataListener l) {
-				// TODO Auto-generated method stub
-				
-			}
-
-			@Override
-			public ClipboardItem getElementAt(int index) {
-				// TODO Auto-generated method stub
-				return null;
-			}
-
-			@Override
-			public int getSize() {
-				// TODO Auto-generated method stub
-				return 0;
-			}
-
-			@Override
-			public void removeListDataListener(ListDataListener l) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-		};();
+		model = new ClipboardList();
 
 		list = new JList(model);
 		list.setCellRenderer(new ClipboardRenderer());

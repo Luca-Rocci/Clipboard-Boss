@@ -1,6 +1,7 @@
 package it.rocci.clipboss.utils;
 
 import it.rocci.clipboss.model.ClipboardItem;
+import it.rocci.clipboss.model.ClipboardList;
 
 import java.awt.Image;
 import java.awt.Toolkit;
@@ -21,12 +22,12 @@ public class ClipboardMonitor implements Runnable {
 	private Object currentContent;
 	private DataFlavor currentFlavor;
 
-	private DefaultListModel model;
+	private ClipboardList model;
 	private Integer iSleep;
 	private Integer iMax;
 
-	public ClipboardMonitor(DefaultListModel model) {
-		this.model = model;
+	public ClipboardMonitor(ClipboardList clipboardList) {
+		this.model = clipboardList;
 		iSleep = Integer.valueOf(Configuration.getString("settings.function.polling"));
 		iMax = Integer.valueOf(Configuration.getString("settings.function.maxitem"));
 	}
@@ -70,11 +71,10 @@ public class ClipboardMonitor implements Runnable {
 	private void hasChanged() {
 		Utils.logger.log(Level.INFO, "Clipboard content updated");
 		if(previousFlavor.equals(DataFlavor.stringFlavor)) {
-			model.
-			model.add(0,new ClipboardItem(0,previousContent,new Date()));
+			model.add(new ClipboardItem(0,previousContent,new Date()));
 		} 
 		else if (previousFlavor.equals(DataFlavor.imageFlavor)) {
-			model.add(0,new ClipboardItem(1,previousContent,new Date()));
+			model.add(new ClipboardItem(1,previousContent,new Date()));
 		}  
 		if (model.getSize()> iMax) {
 			model.remove(model.getSize()-1);
