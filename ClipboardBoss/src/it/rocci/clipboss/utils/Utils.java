@@ -48,7 +48,7 @@ public class Utils {
 		logger = Logger.getLogger("it.rocci.clipboss");
 		FileHandler fh = null;
 		try {
-			fh = new FileHandler(LOG_FILE,true);
+			fh = new FileHandler(LOG_FILE,false);
 		} catch (final Exception e) {
 			e.printStackTrace();
 		}

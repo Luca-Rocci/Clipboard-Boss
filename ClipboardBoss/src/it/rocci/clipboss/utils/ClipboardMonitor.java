@@ -88,13 +88,11 @@ public class ClipboardMonitor implements Runnable {
 			Transferable content = clipboard.getContents(null);
 
 			if (content == null) return;
-
-			Utils.logger.log(Level.INFO, "content " + content.toString());
-			Utils.logger.log(Level.INFO, "contentf " + content.getTransferDataFlavors());
-			Utils.logger.log(Level.INFO, "contentfl " + content.getTransferDataFlavors().length);
+			Utils.logger.log(Level.INFO, "DataFlavor getContents: -------------");
 			for (DataFlavor d : content.getTransferDataFlavors()) {
-				Utils.logger.log(Level.INFO, "conten  s tf " + d.toString());
-				Utils.logger.log(Level.INFO, "conten  s tf " + d.getMimeType());
+				Utils.logger.log(Level.INFO, "DataFlavor toString: " + d.toString());
+				Utils.logger.log(Level.INFO, "DataFlavor getMimeType: " + d.getMimeType());
+				Utils.logger.log(Level.INFO, "DataFlavor getHumanPresentableName: " + d.getHumanPresentableName());
 			}
 			
 			

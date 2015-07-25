@@ -96,13 +96,53 @@ public class MainApp {
 				
 				@Override
 				public void mouseClicked(MouseEvent e) {
+					Utils.logger.log(Level.INFO, "e." + e.isPopupTrigger()); 
+					Utils.logger.log(Level.INFO, "mouseClicked");
 					super.mouseClicked(e);
 					if(e.getButton() == MouseEvent.BUTTON1) {
 						if (!mainWindow.isVisible()) {
 							miniWindow.setVisible(e);
 						}
 					}
+					
 				}
+
+
+				    @Override
+				    public void mousePressed(MouseEvent e) {
+						Utils.logger.log(Level.INFO, "mousePressed");
+						super.mousePressed(e);
+				    }
+
+				    @Override
+				    public void mouseReleased(MouseEvent e) {
+						Utils.logger.log(Level.INFO, "mouseReleased");
+						super.mouseReleased(e);
+				    }
+
+				    @Override
+				    public void mouseEntered(MouseEvent e) {
+						Utils.logger.log(Level.INFO, "mouseEntered");
+						super.mouseEntered(e);
+				    }
+
+				    @Override
+				    public void mouseExited(MouseEvent e) {
+						Utils.logger.log(Level.INFO, "mouseExited");
+						super.mouseExited(e);
+				    }
+
+				    @Override
+				    public void mouseDragged(MouseEvent e) {
+						Utils.logger.log(Level.INFO, "mouseDragged");
+						super.mouseDragged(e);
+				    }
+
+				    @Override
+				    public void mouseMoved(MouseEvent e) {
+						Utils.logger.log(Level.INFO, "mouseMoved");
+						super.mouseMoved(e);
+				    }
 				
 			});
 		}else{
