@@ -93,16 +93,17 @@ public class ClipboardMonitor implements Runnable {
 				Utils.logger.log(Level.INFO, "DataFlavor toString: " + d.toString());
 				Utils.logger.log(Level.INFO, "DataFlavor getMimeType: " + d.getMimeType());
 				Utils.logger.log(Level.INFO, "DataFlavor getHumanPresentableName: " + d.getHumanPresentableName());
-			}
-			
+			}	
 			
 			if(content.isDataFlavorSupported(DataFlavor.stringFlavor)) {
 				currentContent = clipboard.getData(DataFlavor.stringFlavor);
 				currentFlavor = DataFlavor.stringFlavor;
+				Utils.logger.log(Level.INFO, "DataFlavor: stringFlavor");
 			} 
-			else if (content.isDataFlavorSupported(DataFlavor.imageFlavor)) {
+			if (content.isDataFlavorSupported(DataFlavor.imageFlavor)) {
 				currentContent = clipboard.getData(DataFlavor.imageFlavor);
-				currentFlavor = DataFlavor.imageFlavor;                    
+				currentFlavor = DataFlavor.imageFlavor;  
+				Utils.logger.log(Level.INFO, "DataFlavor: imageFlavor");
 			}   
 		}    
 		catch (Exception ex) {
