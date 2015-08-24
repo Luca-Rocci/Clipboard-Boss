@@ -6,7 +6,7 @@
 <programGroup defaultName="Clipboard Boss"
             location="applications"/>
 <shortcut
-name="Clipboard Boss"
+name="Clipboard Boss Test"
 target="javaw.exe"
 commandLine="-Djava.security.policy=.java.policy -jar $INSTALL_PATH\ClipboardBoss.jar"
 description="Launch Clipboard Boss"
