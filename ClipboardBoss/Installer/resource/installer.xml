@@ -54,7 +54,7 @@
 		<panel classname="HTMLLicencePanel" />
 		<panel classname="TargetPanel" />
 		<panel classname="InstallPanel" />
-		<panel classname="ShortcutPanel" condition="showStandardPanel" />
+		<panel classname="ShortcutPanel" />
 		<!-- panel classname="it.rocci.izpack.panels.ShortcutPanel" condition="showShortcutPanel" id="customShortcutPanel" jar="lib/IzPackCustomPanels.jar" / -->
 		<panel classname="SimpleFinishPanel" />
 	</panels>
