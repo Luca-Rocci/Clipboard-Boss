@@ -96,7 +96,7 @@ public class SettingsDialog extends Dialog {
 		File startMenuFile = null;
 		if (Utils.isWindows()) {
 			startMenuFile = new File(Utils.UserHome	+ strWindowsLink);
-		} else if (Utils.isWindows()) {
+		} else if (Utils.isLinux()) {
 			startMenuFile = new File(Utils.UserHome	+ strLinuxLink);
 		}
 
@@ -233,7 +233,7 @@ public class SettingsDialog extends Dialog {
 				if (Utils.isWindows()) {
 					startMenuFile = new File(Utils.UserHome + strWindowsLink);
 					startupFile = new File(Utils.UserHome + strWindowsStartup);
-				} else if (Utils.isWindows()) {
+				} else if (Utils.isLinux()) {
 					startMenuFile = new File(Utils.UserHome + strLinuxLink);
 					startupFile = new File(Utils.UserHome + strLinuxStartup);
 				}
