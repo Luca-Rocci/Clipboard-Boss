@@ -43,7 +43,7 @@ public class NotificationPanel extends JDialog {
 	}
 		
 	public void updateUI() {
-		
+		this.setTitle(Utils.getLabel("title"));
 		this.header.setTitle(Utils.getLabel("title"));
 		this.header.setColorStart(Theme.getColorStart());
 		this.header.setColorEnd(Theme.getColorEnd());

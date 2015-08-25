@@ -54,27 +54,29 @@ public class SettingsDialog extends Dialog {
 	private JLabel lblPolling;
 	private JLabel lblMaxItem;
 	private JCheckBox chkAutorun;
-
+	
+	private String strWindowsLink = "\\AppData\\Roaming\\Microsoft\\Windows\\Start Menu\\Programs\\Clipboard Boss\\Clipboard Boss.lnk";
+	private String strWindowsStartup = "\\AppData\\Roaming\\Microsoft\\Windows\\Start Menu\\Programs\\Startup\\Clipboard Boss.lnk";
+	private String strLinuxLink = "/.local/share/applications/ClipboardBoss.desktop";
+	private String strLinuxStartup = "/.config/share/autostart/ClipboardBoss.desktop";
+			
 	public SettingsDialog() {
 		super();
 
 		final JPanel panelCenter = new JPanel();
 		panelCenter.setBackground(Theme.getColorBackground());
 		panelCenter.setLayout(new BoxLayout(panelCenter, BoxLayout.PAGE_AXIS));
-		panelCenter.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
-		TitledBorder title = BorderFactory.createTitledBorder(Utils
-				.getLabel("settings.ui"));
+		panelCenter.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+		TitledBorder title = BorderFactory.createTitledBorder(Utils.getLabel("settings.ui"));
 		panelUI = new JPanel();
 		panelUI.setBorder(title);
 		panelUI.setOpaque(false);
 		panelUI.setLayout(new BoxLayout(panelUI, BoxLayout.PAGE_AXIS));
 
 		panelUI.add(getLocaleSettings());
-
 		panelUI.add(getThemeSettings());
 
-		title = BorderFactory.createTitledBorder(Utils
-				.getLabel("settings.function"));
+		title = BorderFactory.createTitledBorder(Utils.getLabel("settings.function"));
 		panelFunc = new JPanel();
 		panelFunc.setOpaque(false);
 		panelFunc.setBorder(title);
@@ -84,15 +86,21 @@ public class SettingsDialog extends Dialog {
 		lblMaxItem = new JLabel();
 		chkAutorun = new JCheckBox();
 
-		panelFunc.add(getNumberSettings(lblMaxItem,"settings.function.maxitem",10,50,1)); 
-		panelFunc.add(getNumberSettings(lblPolling,"settings.function.polling",200,10000,50)); 
+		panelFunc.add(getNumberSettings(lblMaxItem,"settings.function.maxitem", 10, 50, 1));
+		panelFunc.add(getNumberSettings(lblPolling,"settings.function.polling", 200, 10000, 50));
 		panelFunc.add(getBooleanSettings(chkAutorun,"settings.function.autorun"));
 		panelCenter.add(panelUI);
 		panelCenter.add(panelFunc);
 		panelCenter.add(Box.createVerticalGlue());
 
-//		JLabel label = new JLabel(Utils.getLabel("settings.note"));
-//		this.footer.add(label, BorderLayout.LINE_START);
+		File startMenuFile = null;
+		if (Utils.isWindows()) {
+			startMenuFile = new File(Utils.UserHome	+ strWindowsLink);
+		} else if (Utils.isWindows()) {
+			startMenuFile = new File(Utils.UserHome	+ strLinuxLink);
+		}
+
+		chkAutorun.setEnabled(startMenuFile.exists());
 
 		this.add(panelCenter, BorderLayout.CENTER);
 	}
@@ -109,17 +117,6 @@ public class SettingsDialog extends Dialog {
 			invalidate();
 			updateUI();
 
-		} else if (e.getActionCommand().contains("settings.function.")) {
-			final JCheckBox chk = (JCheckBox) e.getSource();
-			Configuration.setString(e.getActionCommand(), String.valueOf(chk.isSelected()));
-			String path = MainApp.class.getProtectionDomain().getCodeSource().getLocation().getPath();
-			try {
-				String decodedPath = URLDecoder.decode(path, "UTF-8");
-				System.out.println(decodedPath);
-			} catch (UnsupportedEncodingException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
 		}
 	}
 
@@ -131,8 +128,8 @@ public class SettingsDialog extends Dialog {
 		locale.setLayout(new BoxLayout(locale, BoxLayout.LINE_AXIS));
 		locale.setBorder(BorderFactory.createEmptyBorder(2, 5, 5, 5));
 		locale.setPreferredSize(new Dimension(500, 30));
-		locale.setMaximumSize(new Dimension(1000,30));
-		locale.setMinimumSize(new Dimension(200,30));
+		locale.setMaximumSize(new Dimension(1000, 30));
+		locale.setMinimumSize(new Dimension(200, 30));
 		locale.setOpaque(false);
 
 		lblLocale = new JLabel(Utils.getLabel(key));
@@ -144,7 +141,9 @@ public class SettingsDialog extends Dialog {
 		combo.setRenderer(new LabelListRenderer());
 
 		for (Locale l : Utils.supportedLocales) {
-			final JLabel themeItem = new JLabel(l.getDisplayLanguage(), Utils.getIcon(l.getLanguage() +".png"),SwingConstants.LEFT);
+			final JLabel themeItem = new JLabel(l.getDisplayLanguage(),
+					Utils.getIcon(l.getLanguage() + ".png"),
+					SwingConstants.LEFT);
 			themeItem.setToolTipText(l.getLanguage());
 			combo.addItem(themeItem);
 			if (value.equals(l.getLanguage())) {
@@ -169,8 +168,8 @@ public class SettingsDialog extends Dialog {
 		theme.setLayout(new BoxLayout(theme, BoxLayout.LINE_AXIS));
 		theme.setBorder(BorderFactory.createEmptyBorder(2, 5, 5, 5));
 		theme.setPreferredSize(new Dimension(500, 30));
-		theme.setMaximumSize(new Dimension(1000,30));
-		theme.setMinimumSize(new Dimension(200,30));
+		theme.setMaximumSize(new Dimension(1000, 30));
+		theme.setMinimumSize(new Dimension(200, 30));
 		theme.setOpaque(false);
 
 		lblTheme = new JLabel(Utils.getLabel(key));
@@ -206,7 +205,7 @@ public class SettingsDialog extends Dialog {
 		return theme;
 	}
 
-	private JPanel getBooleanSettings(JCheckBox chkbox, String key) {
+	private JPanel getBooleanSettings(JCheckBox chkbox, final String key) {
 
 		String value = Configuration.getString(key);
 
@@ -214,8 +213,8 @@ public class SettingsDialog extends Dialog {
 		function.setLayout(new BoxLayout(function, BoxLayout.LINE_AXIS));
 		function.setBorder(BorderFactory.createEmptyBorder(2, 5, 5, 5));
 		function.setPreferredSize(new Dimension(500, 30));
-		function.setMaximumSize(new Dimension(1000,30));
-		function.setMinimumSize(new Dimension(200,30));
+		function.setMaximumSize(new Dimension(1000, 30));
+		function.setMinimumSize(new Dimension(200, 30));
 		function.setOpaque(false);
 
 		chkbox.setText(Utils.getLabel(key));
@@ -223,8 +222,33 @@ public class SettingsDialog extends Dialog {
 		chkbox.setOpaque(false);
 
 		chkbox.setSelected(Boolean.valueOf(value));
-		chkbox.addActionListener(this);
-		chkbox.setActionCommand(key);
+		chkbox.addChangeListener(new ChangeListener() {
+
+			@Override
+			public void stateChanged(ChangeEvent e) {
+				final JCheckBox chk = (JCheckBox) e.getSource();
+				Configuration.setString(key, String.valueOf(chk.isSelected()));
+				File startMenuFile = null;
+				File startupFile = null;
+				if (Utils.isWindows()) {
+					startMenuFile = new File(Utils.UserHome + strWindowsLink);
+					startupFile = new File(Utils.UserHome + strWindowsStartup);
+				} else if (Utils.isWindows()) {
+					startMenuFile = new File(Utils.UserHome + strLinuxLink);
+					startupFile = new File(Utils.UserHome + strLinuxStartup);
+				}
+
+				if (chk.isSelected()) {
+					if (startMenuFile.exists()) {
+						Utils.copyFile(startMenuFile,startupFile);
+					}
+				} else {
+					if (startupFile.exists()) {
+						startupFile.delete();
+					}
+				}
+			}
+		});
 
 		function.add(chkbox);
 		function.add(Box.createHorizontalGlue());
@@ -232,21 +256,22 @@ public class SettingsDialog extends Dialog {
 		return function;
 	}
 
-	private JPanel getNumberSettings(JLabel label, final String key,int min, int max, int step) {
+	private JPanel getNumberSettings(JLabel label, final String key, int min,
+			int max, int step) {
 		String value = Configuration.getString(key);
 
 		JPanel theme = new JPanel();
 		theme.setLayout(new BoxLayout(theme, BoxLayout.LINE_AXIS));
 		theme.setBorder(BorderFactory.createEmptyBorder(2, 5, 5, 5));
 		theme.setPreferredSize(new Dimension(500, 30));
-		theme.setMaximumSize(new Dimension(1000,30));
-		theme.setMinimumSize(new Dimension(200,30));
+		theme.setMaximumSize(new Dimension(1000, 30));
+		theme.setMinimumSize(new Dimension(200, 30));
 		theme.setOpaque(false);
 
 		label.setText(Utils.getLabel(key));
 		label.setPreferredSize(new Dimension(200, 26));
 		label.setOpaque(false);
-		SpinnerModel intModel = new SpinnerNumberModel(min,min,max,step);
+		SpinnerModel intModel = new SpinnerNumberModel(min, min, max, step);
 		JSpinner spinner = new JSpinner(intModel);
 		spinner.setEditor(new JSpinner.NumberEditor(spinner, "#"));
 		spinner.setPreferredSize(new Dimension(70, 26));
@@ -255,7 +280,8 @@ public class SettingsDialog extends Dialog {
 
 			@Override
 			public void stateChanged(ChangeEvent e) {
-				Configuration.setString(key,String.valueOf(((SpinnerModel)e.getSource()).getValue()));
+				Configuration.setString(key, String.valueOf(((SpinnerModel) e
+						.getSource()).getValue()));
 
 			}
 		});
@@ -281,16 +307,11 @@ public class SettingsDialog extends Dialog {
 				.getLabel("settings.function"));
 		panelFunc.setBorder(title);
 
-		lblLocale.setText(Utils
-				.getLabel("settings.ui.locale"));
-		lblTheme.setText(Utils
-				.getLabel("settings.ui.theme"));
-		lblPolling.setText(Utils
-				.getLabel("settings.function.polling"));
-		lblMaxItem.setText(Utils
-				.getLabel("settings.function.maxitem"));
-		chkAutorun.setText(Utils
-				.getLabel("settings.function.autorun"));
+		lblLocale.setText(Utils.getLabel("settings.ui.locale"));
+		lblTheme.setText(Utils.getLabel("settings.ui.theme"));
+		lblPolling.setText(Utils.getLabel("settings.function.polling"));
+		lblMaxItem.setText(Utils.getLabel("settings.function.maxitem"));
+		chkAutorun.setText(Utils.getLabel("settings.function.autorun"));
 
 	}
 

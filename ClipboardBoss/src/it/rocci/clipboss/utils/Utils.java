@@ -12,11 +12,15 @@ import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.nio.channels.FileChannel;
 import java.text.DecimalFormat;
 import java.util.Arrays;
 import java.util.Locale;
@@ -67,6 +71,22 @@ public class Utils {
 				}
 				file.delete();
 			}
+		}
+	}
+	
+	public static void copyFile(File source, File dest) {
+		FileChannel inputChannel = null;
+		FileChannel outputChannel = null;
+		try {
+			inputChannel = new FileInputStream(source).getChannel();
+			outputChannel = new FileOutputStream(dest).getChannel();
+			outputChannel.transferFrom(inputChannel, 0, inputChannel.size());
+		} catch (Exception e) {
+		} finally {
+			try {
+				inputChannel.close();
+				outputChannel.close();
+			} catch (IOException e) { }
 		}
 	}
 
@@ -145,5 +165,16 @@ public class Utils {
 	     g.dispose();
 	     return i;
 	 }
+	 
+	 public static void createShortcut(File f, String name, String target, String icon) 
+   throws IOException
+ {
+   FileWriter fw = new FileWriter(f);
+   fw.write("[InternetShortcut]\n");
+   fw.write("URL=" + target + "\n");
+   fw.write("IconFile=" + icon + "\n");  
+   fw.flush();
+   fw.close();
+ }
 	
 }
