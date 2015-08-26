@@ -39,7 +39,7 @@ public class MiniWindow extends NotificationPanel implements ActionListener {
 
 	public MiniWindow(final MainWindow main) {
 		
-		super();
+		super(main);
 
 		btnMinimize= new Button(this);	
 		btnMassimize= new Button(this);

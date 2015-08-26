@@ -35,4 +35,9 @@ public class ClipboardList extends AbstractListModel<ClipboardItem> {
 		}
 	}
 	
+	public void clear() {
+		lClipboard.clear();
+		fireContentsChanged(this, 0, getSize());
+	}
+	
 }

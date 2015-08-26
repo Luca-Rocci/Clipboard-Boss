@@ -9,6 +9,7 @@ import it.rocci.clipboss.utils.ClipboardMonitor;
 import it.rocci.clipboss.utils.Utils;
 
 import java.awt.AWTException;
+import java.awt.CheckboxMenuItem;
 import java.awt.EventQueue;
 import java.awt.Image;
 import java.awt.MenuItem;
@@ -18,6 +19,8 @@ import java.awt.Toolkit;
 import java.awt.TrayIcon;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
@@ -31,7 +34,9 @@ public class MainApp {
 	private TrayIcon trayIcon;
 	private SystemTray tray;
 	private MainWindow mainWindow;
-	private MiniWindow miniWindow;
+//	private MiniWindow miniWindow;
+	private NotificationPanel notifier;
+	private ClipboardMonitor clipboardMonitor;
 
 	public MainApp() {
 
@@ -47,104 +52,122 @@ public class MainApp {
 		mainWindow.setLocationRelativeTo(null);
 		mainWindow.setIconImage(image);
 
-		miniWindow = new MiniWindow(mainWindow);
+//		miniWindow = new MiniWindow(mainWindow);
 
+		notifier = new NotificationPanel(mainWindow);
+		notifier.showMessage("stare");
+		
 		if(SystemTray.isSupported()){
 			Utils.logger.log(Level.INFO, "System tray supported");
-			tray=SystemTray.getSystemTray();
+			tray = SystemTray.getSystemTray();
 
 			PopupMenu menu = new PopupMenu();
 			MenuItem item = new MenuItem(Utils.getLabel("close"));
 			item.addActionListener(new ActionListener() {
-			 public void actionPerformed(ActionEvent e) {
-				 tray.remove(trayIcon);
-			 System.exit(0);
-			  }
-			 });
+				public void actionPerformed(ActionEvent e) {
+					tray.remove(trayIcon);
+					System.exit(0);
+				}
+			});
+			menu.add(item);
+			menu.addSeparator();
+			CheckboxMenuItem itemc = new CheckboxMenuItem(Utils.getLabel("pause"));
+			itemc.addItemListener(new ItemListener() {
+				@Override
+				public void itemStateChanged(ItemEvent e) {
+					clipboardMonitor.setPause(!clipboardMonitor.isPause());
+				}
+			});
+			menu.add(itemc);
+			item = new MenuItem(Utils.getLabel("clear"));
+			item.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					mainWindow.getModel().clear();
+				}
+			});
 			menu.add(item);
 			menu.addSeparator();
 			item = new MenuItem(Utils.getLabel("open"));
 			item.addActionListener(new ActionListener() {
-			 public void actionPerformed(ActionEvent e) {
-				 mainWindow.setVisible(true);
-			  }
-			 });
-			menu.add(item);
-			item = new MenuItem(Utils.getLabel("about"));
-			item.addActionListener(new ActionListener() {
-			 public void actionPerformed(ActionEvent e) {
-				 final AboutDialog ad = new AboutDialog();
-					ad.setLocationRelativeTo(null);
-					ad.setVisible(true);
-			  }
-			 });
+				public void actionPerformed(ActionEvent e) {
+					mainWindow.setVisible(true);
+				}
+			});
 			menu.add(item);
 			item = new MenuItem(Utils.getLabel("settings"));
 			item.addActionListener(new ActionListener() {
-			 public void actionPerformed(ActionEvent e) {
-				 final SettingsDialog sd = new SettingsDialog();
+				public void actionPerformed(ActionEvent e) {
+					final SettingsDialog sd = new SettingsDialog();
 					sd.setLocationRelativeTo(null);
 					sd.setVisible(true);
-			  }
-			 });
+				}
+			});
 			menu.add(item);
-					
+			item = new MenuItem(Utils.getLabel("about"));
+			item.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					final AboutDialog ad = new AboutDialog();
+					ad.setLocationRelativeTo(null);
+					ad.setVisible(true);
+				}
+			});
+			menu.add(item);
 			trayIcon=new TrayIcon(image, Utils.getLabel("title"), menu);
 			trayIcon.setImageAutoSize(true);
 
-			trayIcon.addMouseListener(new MouseAdapter() {
-				
-				@Override
-				public void mouseClicked(MouseEvent e) {
-					Utils.logger.log(Level.INFO, "e." + e.isPopupTrigger()); 
-					Utils.logger.log(Level.INFO, "mouseClicked");
-					super.mouseClicked(e);
-					if(e.getButton() == MouseEvent.BUTTON1) {
-						if (!mainWindow.isVisible()) {
-							miniWindow.setVisible(e);
-						}
-					}
-					
-				}
-
-
-				    @Override
-				    public void mousePressed(MouseEvent e) {
-						Utils.logger.log(Level.INFO, "mousePressed");
-						super.mousePressed(e);
-				    }
-
-				    @Override
-				    public void mouseReleased(MouseEvent e) {
-						Utils.logger.log(Level.INFO, "mouseReleased");
-						super.mouseReleased(e);
-				    }
-
-				    @Override
-				    public void mouseEntered(MouseEvent e) {
-						Utils.logger.log(Level.INFO, "mouseEntered");
-						super.mouseEntered(e);
-				    }
-
-				    @Override
-				    public void mouseExited(MouseEvent e) {
-						Utils.logger.log(Level.INFO, "mouseExited");
-						super.mouseExited(e);
-				    }
-
-				    @Override
-				    public void mouseDragged(MouseEvent e) {
-						Utils.logger.log(Level.INFO, "mouseDragged");
-						super.mouseDragged(e);
-				    }
-
-				    @Override
-				    public void mouseMoved(MouseEvent e) {
-						Utils.logger.log(Level.INFO, "mouseMoved");
-						super.mouseMoved(e);
-				    }
-				
-			});
+//			trayIcon.addMouseListener(new MouseAdapter() {
+//
+//				@Override
+//				public void mouseClicked(MouseEvent e) {
+//					Utils.logger.log(Level.INFO, "e." + e.isPopupTrigger()); 
+//					Utils.logger.log(Level.INFO, "mouseClicked");
+//					super.mouseClicked(e);
+//					if(e.getButton() == MouseEvent.BUTTON1) {
+//						if (!mainWindow.isVisible()) {
+//							miniWindow.setVisible(e);
+//						}
+//					}
+//
+//				}
+//
+//
+//				@Override
+//				public void mousePressed(MouseEvent e) {
+//					Utils.logger.log(Level.INFO, "mousePressed");
+//					super.mousePressed(e);
+//				}
+//
+//				@Override
+//				public void mouseReleased(MouseEvent e) {
+//					Utils.logger.log(Level.INFO, "mouseReleased");
+//					super.mouseReleased(e);
+//				}
+//
+//				@Override
+//				public void mouseEntered(MouseEvent e) {
+//					Utils.logger.log(Level.INFO, "mouseEntered");
+//					super.mouseEntered(e);
+//				}
+//
+//				@Override
+//				public void mouseExited(MouseEvent e) {
+//					Utils.logger.log(Level.INFO, "mouseExited");
+//					super.mouseExited(e);
+//				}
+//
+//				@Override
+//				public void mouseDragged(MouseEvent e) {
+//					Utils.logger.log(Level.INFO, "mouseDragged");
+//					super.mouseDragged(e);
+//				}
+//
+//				@Override
+//				public void mouseMoved(MouseEvent e) {
+//					Utils.logger.log(Level.INFO, "mouseMoved");
+//					super.mouseMoved(e);
+//				}
+//
+//			});
 		}else{
 			Utils.logger.log(Level.WARNING, "System tray not supported");
 		}
@@ -156,7 +179,9 @@ public class MainApp {
 			mainWindow.setVisible(true);
 		}
 
-		Thread monitorThread = new Thread(new ClipboardMonitor(mainWindow.getModel()));
+		clipboardMonitor = new ClipboardMonitor(mainWindow.getModel(), notifier);
+		
+		Thread monitorThread = new Thread(clipboardMonitor);
 		monitorThread.setDaemon(true);
 		monitorThread.start();
 
@@ -164,14 +189,13 @@ public class MainApp {
 
 
 	public static void main(String[] args) {
-	
-				try {
-					UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-				} catch (Exception ex) {
-					Utils.logger.log(Level.SEVERE, "UI Manager", ex);
-				}
-				new MainApp();
-				NotificationPanel.showMessage(Utils.getLabel("start"), 2500);
+
+		try {
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+		} catch (Exception ex) {
+			Utils.logger.log(Level.SEVERE, "UI Manager", ex);
+		}
+		new MainApp();
 	}
 
 }

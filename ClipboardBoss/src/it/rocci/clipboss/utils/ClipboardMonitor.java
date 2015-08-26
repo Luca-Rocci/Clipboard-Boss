@@ -2,6 +2,7 @@ package it.rocci.clipboss.utils;
 
 import it.rocci.clipboss.model.ClipboardItem;
 import it.rocci.clipboss.model.ClipboardList;
+import it.rocci.clipboss.ui.component.NotificationPanel;
 
 import java.awt.Image;
 import java.awt.Toolkit;
@@ -23,11 +24,19 @@ public class ClipboardMonitor implements Runnable {
 	private DataFlavor currentFlavor;
 
 	private ClipboardList model;
+	private NotificationPanel notifier;
+	
 	private Integer iSleep;
 	private Integer iMax;
+	private boolean pause = false; 
 
-	public ClipboardMonitor(ClipboardList clipboardList) {
+	public ClipboardMonitor(ClipboardList clipboardList, NotificationPanel notifier) {
 		this.model = clipboardList;
+		this.notifier = notifier;
+		this.updateConfig();
+	}
+
+	public void updateConfig() {
 		iSleep = Integer.valueOf(Configuration.getString("settings.function.polling"));
 		iMax = Integer.valueOf(Configuration.getString("settings.function.maxitem"));
 	}
@@ -43,27 +52,29 @@ public class ClipboardMonitor implements Runnable {
 				Thread.sleep(iSleep);
 			} catch (InterruptedException ex) {
 			}
-			getContents();
-			if ( currentContent == null || currentContent == null) {
-				continue;
-			}
-			
-			if (previousFlavor != null && previousFlavor.equals(currentFlavor)) {
-				if(previousFlavor.equals(DataFlavor.stringFlavor) && !previousContent.equals(currentContent)) {
-					previousContent = currentContent;
-					hasChanged();
-				} else if(previousFlavor.equals(DataFlavor.imageFlavor)) {
-					BufferedImage b1 = Utils.convertImage((Image)previousContent);
-					BufferedImage b2 = Utils.convertImage((Image)currentContent);
-					if(!Utils.bufferedImageEquals(b1,b2)) {
+			if (!pause) {
+				getContents();
+				if ( currentContent == null || currentContent == null) {
+					continue;
+				}
+				
+				if (previousFlavor != null && previousFlavor.equals(currentFlavor)) {
+					if(previousFlavor.equals(DataFlavor.stringFlavor) && !previousContent.equals(currentContent)) {
 						previousContent = currentContent;
 						hasChanged();
+					} else if(previousFlavor.equals(DataFlavor.imageFlavor)) {
+						BufferedImage b1 = Utils.convertImage((Image)previousContent);
+						BufferedImage b2 = Utils.convertImage((Image)currentContent);
+						if(!Utils.bufferedImageEquals(b1,b2)) {
+							previousContent = currentContent;
+							hasChanged();
+						}
 					}
+				} else {
+					previousContent = currentContent;
+					previousFlavor = currentFlavor;
+					hasChanged();
 				}
-			} else {
-				previousContent = currentContent;
-				previousFlavor = currentFlavor;
-				hasChanged();
 			}
 		}
 	}
@@ -72,6 +83,7 @@ public class ClipboardMonitor implements Runnable {
 		Utils.logger.log(Level.INFO, "Clipboard content updated");
 		if(previousFlavor.equals(DataFlavor.stringFlavor)) {
 			model.add(new ClipboardItem(0,previousContent,new Date()));
+			notifier.showMessage((String)previousContent);
 		} 
 		else if (previousFlavor.equals(DataFlavor.imageFlavor)) {
 			model.add(new ClipboardItem(1,previousContent,new Date()));
@@ -79,6 +91,7 @@ public class ClipboardMonitor implements Runnable {
 		if (model.getSize()> iMax) {
 			model.remove(model.getSize()-1);
 		}
+		
 	}
 
 	private void getContents() {
@@ -110,4 +123,12 @@ public class ClipboardMonitor implements Runnable {
 			Utils.logger.log(Level.SEVERE, "Clipboard Monitor");
 		}     
 	}
+	
+	 public synchronized void setPause(boolean pause) {
+	      this.pause = pause; 
+	   }
+	   
+	   public synchronized boolean isPause() {
+	      return this.pause; 
+	   }
 }
