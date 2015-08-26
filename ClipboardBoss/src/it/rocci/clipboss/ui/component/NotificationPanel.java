@@ -55,7 +55,9 @@ public class NotificationPanel extends JDialog implements ActionListener, MouseL
 
 		this.add(this.header, BorderLayout.PAGE_START);
 		this.add(this.lblMessage, BorderLayout.CENTER);
-		
+		setFocusable(false);
+		setAutoRequestFocus(false);
+		setFocusableWindowState(false);
 		setUndecorated(true);
 		AWTUtilities.setWindowOpaque(this, false);
 		setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);

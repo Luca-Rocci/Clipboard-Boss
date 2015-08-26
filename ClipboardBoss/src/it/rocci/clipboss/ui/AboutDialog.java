@@ -17,6 +17,7 @@ import javax.swing.JButton;
 import javax.swing.JEditorPane;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.text.html.HTMLDocument;
 import javax.swing.text.html.HTMLEditorKit;
 
 public class AboutDialog extends Dialog {
@@ -33,8 +34,12 @@ public class AboutDialog extends Dialog {
                 + "<p>This software is free, you can redistribute it under the terms of the GNU General Public License</p>\n"
                 + "<p>Copyright (C) 2015 Luca Rocci</p>"
                 + "</center>";
+		 String aCss =  "body {font-family: \"Nimbus Sans L\", \"URW Gothic L\", Verdana, Tahoma, Helvetica, \"Lucida Grande\" Geneva, \"DejaVu Sans\", \"Microsoft Sans Serif\", sans-serif; "
+	                + "font-size: 12pt; }";
         JEditorPane aboutText = new JEditorPane(new HTMLEditorKit().getContentType(), aText);
         aboutText.setContentType("text/html");
+         ((HTMLDocument) aboutText.getDocument()).getStyleSheet().addRule(aCss);
+
         aboutText.setEditable(false);
         aboutText.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         aboutText.setText(aText);
