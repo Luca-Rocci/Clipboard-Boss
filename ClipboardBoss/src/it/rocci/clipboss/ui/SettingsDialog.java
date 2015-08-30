@@ -17,6 +17,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.io.File;
+import java.io.FileFilter;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
@@ -57,7 +59,7 @@ public class SettingsDialog extends Dialog {
 	
 	private String strWindowsLink = "\\AppData\\Roaming\\Microsoft\\Windows\\Start Menu\\Programs\\Clipboard Boss\\Clipboard Boss.lnk";
 	private String strWindowsStartup = "\\AppData\\Roaming\\Microsoft\\Windows\\Start Menu\\Programs\\Startup\\Clipboard Boss.lnk";
-	private String strLinuxLink = "/.local/share/applications/ClipboardBoss.desktop";
+	private String strLinuxLink = "/.local/share/applications/";
 	private String strLinuxStartup = "/.config/share/autostart/ClipboardBoss.desktop";
 			
 	public SettingsDialog() {
@@ -96,11 +98,15 @@ public class SettingsDialog extends Dialog {
 		File startMenuFile = null;
 		if (Utils.isWindows()) {
 			startMenuFile = new File(Utils.UserHome	+ strWindowsLink);
+			chkAutorun.setEnabled(startMenuFile.exists());
 		} else if (Utils.isLinux()) {
 			startMenuFile = new File(Utils.UserHome	+ strLinuxLink);
+			for (File f : startMenuFile.listFiles()) {
+				if (f.getName().startsWith("ClipboardBoss") && f.getName().endsWith(".desktop")) {
+					chkAutorun.setEnabled(true);
+				}
+			}
 		}
-
-		chkAutorun.setEnabled(startMenuFile.exists());
 
 		this.add(panelCenter, BorderLayout.CENTER);
 	}
@@ -234,7 +240,14 @@ public class SettingsDialog extends Dialog {
 					startMenuFile = new File(Utils.UserHome + strWindowsLink);
 					startupFile = new File(Utils.UserHome + strWindowsStartup);
 				} else if (Utils.isLinux()) {
-					startMenuFile = new File(Utils.UserHome + strLinuxLink);
+					startMenuFile = new File(Utils.UserHome + strLinuxLink);		
+					for (File f : startMenuFile.listFiles()) {
+						if (f.getName().startsWith("ClipboardBoss") && f.getName().endsWith(".desktop")) {
+							startMenuFile = f;
+							break;
+						}
+					}
+					
 					startupFile = new File(Utils.UserHome + strLinuxStartup);
 				}
 
