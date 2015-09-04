@@ -3,6 +3,7 @@ package it.rocci.clipboss.utils;
 import it.rocci.clipboss.model.ClipboardItem;
 import it.rocci.clipboss.model.ClipboardList;
 import it.rocci.clipboss.ui.component.NotificationPanel;
+import it.rocci.clipboss.ui.component.ScratchPad;
 
 import java.awt.Image;
 import java.awt.Toolkit;
@@ -24,13 +25,13 @@ public class ClipboardMonitor implements Runnable {
 	private DataFlavor currentFlavor;
 
 	private ClipboardList model;
-	private NotificationPanel notifier;
+	private ScratchPad notifier;
 	
 	private Integer iSleep;
 	private Integer iMax;
 	private boolean pause = false; 
 
-	public ClipboardMonitor(ClipboardList clipboardList, NotificationPanel notifier) {
+	public ClipboardMonitor(ClipboardList clipboardList, ScratchPad notifier) {
 		this.model = clipboardList;
 		this.notifier = notifier;
 		this.updateConfig();
@@ -83,10 +84,11 @@ public class ClipboardMonitor implements Runnable {
 		Utils.logger.log(Level.INFO, "Clipboard content updated");
 		if(previousFlavor.equals(DataFlavor.stringFlavor)) {
 			model.add(new ClipboardItem(0,previousContent,new Date()));
-			notifier.showMessage((String)previousContent);
+			notifier.showTextMessage((String)previousContent);
 		} 
 		else if (previousFlavor.equals(DataFlavor.imageFlavor)) {
 			model.add(new ClipboardItem(1,previousContent,new Date()));
+			notifier.showImageMessage((Image)previousContent);
 		}  
 		if (model.getSize()> iMax) {
 			model.remove(model.getSize()-1);

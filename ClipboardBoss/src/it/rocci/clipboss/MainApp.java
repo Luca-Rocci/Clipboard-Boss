@@ -5,6 +5,7 @@ import it.rocci.clipboss.ui.MainWindow;
 import it.rocci.clipboss.ui.MiniWindow;
 import it.rocci.clipboss.ui.SettingsDialog;
 import it.rocci.clipboss.ui.component.NotificationPanel;
+import it.rocci.clipboss.ui.component.ScratchPad;
 import it.rocci.clipboss.utils.ClipboardMonitor;
 import it.rocci.clipboss.utils.Utils;
 
@@ -35,7 +36,7 @@ public class MainApp {
 	private SystemTray tray;
 	private MainWindow mainWindow;
 //	private MiniWindow miniWindow;
-	private NotificationPanel notifier;
+	private ScratchPad notifier;
 	private ClipboardMonitor clipboardMonitor;
 
 	public MainApp() {
@@ -54,8 +55,8 @@ public class MainApp {
 
 //		miniWindow = new MiniWindow(mainWindow);
 
-		notifier = new NotificationPanel(mainWindow);
-		notifier.showMessage("stare");
+		notifier = new ScratchPad(mainWindow);
+		notifier.showTextMessage(Utils.getLabel("start"));
 		
 		if(SystemTray.isSupported()){
 			Utils.logger.log(Level.INFO, "System tray supported");

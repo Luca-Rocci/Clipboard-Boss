@@ -79,6 +79,15 @@
                 izPackDir="${user.home}/IzPack/" />
 	</target>
 
+	<target name="make-install-web">
+		<izpack input="${basedir}\Installer\resource\installer.xml"
+                output="${basedir}\Installer\release\${app-name}-uni.jar"
+                installerType="web"
+                inheritAll="true" 
+                basedir="${basedir}"
+                izPackDir="${user.home}/IzPack/" />
+	</target>
+                	
 	<target name="make-app">
 		<exec executable="C:\Python34\python.exe" failonerror="true">
 			<arg line="${user.home}\IzPack\utils\wrappers\izpack2app\izpack2app2.py"/>

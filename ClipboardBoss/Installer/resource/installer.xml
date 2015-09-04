@@ -16,8 +16,9 @@
 		<url >https://github.com/Luca-Rocci/Clipboard-Boss</url>
 		<!-- run-privileged condition="izpack.windowsinstall.vista|izpack.windowsinstall.7|izpack.windowsinstall.8|izpack.macinstall" / -->
 	<!-- uninstaller write="no" -->
-
+<webdir>http://luca-rocci.github.io/Clipboard-Boss/</webdir>
 <writeinstallationinformation>no</writeinstallationinformation>
+
 	</info>
 
 	<locale>
