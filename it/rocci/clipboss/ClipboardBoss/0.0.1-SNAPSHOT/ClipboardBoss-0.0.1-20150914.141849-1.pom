@@ -7,7 +7,7 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<name>Clipboard Boss</name>
 	<description>Java application to manage a system clipboard history</description>
-	<packaging>jar</packaging>
+	<packaging>pom</packaging>
 	<url>http://luca-rocci.github.io/Clipboard-Boss</url>
 
 	<organization>
@@ -26,7 +26,7 @@
 	<developers>
 		<developer>
 			<name>Luca Rocci</name>
-			<email>luca.rocci@gmail.com</email>
+			<email>luca.rocci@libero.it</email>
 		</developer>
 	</developers>
 
@@ -108,7 +108,7 @@
 		    <plugin>
             <groupId>com.github.github</groupId>
             <artifactId>site-maven-plugin</artifactId>
-            <version>0.11</version>
+            <version>0.12</version>
             <configuration>
                 <message>Maven artifacts for ${project.version}</message>  <!-- git commit message -->
                 <noJekyll>true</noJekyll>                                  <!-- disable webpage processing -->
@@ -138,5 +138,14 @@
 	        <url>file://${project.build.directory}/mvn-repo</url>
 	    </repository>
 	</distributionManagement>
-
+<repositories>
+  <repository>
+    <id>Clipboard-Boss-mvn-repo</id>
+    <url>https://raw.github.com/Luca-Rocci/Clipboard-Boss/mvn-repo/</url>
+    <snapshots>
+      <enabled>true</enabled>
+      <updatePolicy>always</updatePolicy>
+    </snapshots>
+  </repository>
+</repositories>
 </project>
