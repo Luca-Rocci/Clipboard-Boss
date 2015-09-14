@@ -1,6 +1,0 @@
-// Clipboard Boss permissions
-grant codeBase "file:ClipboardBoss.jar" {
-
-		permission java.awt.AWTPermission "accessClipboard";
-
-};
