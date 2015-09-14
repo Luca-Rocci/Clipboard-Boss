@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>it.rocci.clipboss</groupId>
 	<artifactId>ClipboardBoss</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.2</version>
 	<name>Clipboard Boss</name>
 	<description>Java application to manage a system clipboard history</description>
 	<packaging>pom</packaging>

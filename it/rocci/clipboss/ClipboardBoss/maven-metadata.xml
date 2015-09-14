@@ -3,9 +3,10 @@
   <groupId>it.rocci.clipboss</groupId>
   <artifactId>ClipboardBoss</artifactId>
   <versioning>
+    <release>0.0.2</release>
     <versions>
-      <version>0.0.1-SNAPSHOT</version>
+      <version>0.0.2</version>
     </versions>
-    <lastUpdated>20150914141849</lastUpdated>
+    <lastUpdated>20150914142013</lastUpdated>
   </versioning>
 </metadata>
