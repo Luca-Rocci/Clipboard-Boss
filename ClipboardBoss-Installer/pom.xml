@@ -3,14 +3,121 @@
   <groupId>it.rocci.clipboss</groupId>
   <artifactId>ClipboardBoss-Installer</artifactId>
   <version>0.0.1-SNAPSHOT</version>
-  <name>ClipboardBoss-Installer</name>
+  <name>Clipboard Boss Installer</name>
+  <packaging>izpack-jar</packaging>
+	<description>Installer for Clipboard Boss, an java application to manage a system clipboard history</description>
+	<url>http://luca-rocci.github.io/Clipboard-Boss</url>
+
+	<organization>
+		<name>Luca Rocci</name>
+		<url>http://luca-rocci.github.io/Clipboard-Boss</url>
+	</organization>
+
+	<licenses>
+		<license>
+			<name>GNU Lesser General Public License (LGPL), Version 3</name>
+			<url>http://www.gnu.org/licenses/lgpl.txt</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
+
+	<developers>
+		<developer>
+			<name>Luca Rocci</name>
+			<email>luca.rocci@libero.it</email>
+		</developer>
+	</developers>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<jdk.version>1.6</jdk.version>
+  		<github.global.server>github</github.global.server>
+	</properties>
+	
   <build>
-  	<plugins>
+  	<plugins>  		
   		<plugin>
-  			<groupId>org.codehaus.izpack</groupId>
-  			<artifactId>izpack-maven-plugin</artifactId>
-  			<version>5.0.3</version>
-  		</plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-resources-plugin</artifactId>
+        <executions>
+          <!-- Copy IzPack resource files -->
+          <execution>
+            <id>copy-izpack-resources</id>
+            <phase>prepare-package</phase>
+            <goals>
+              <goal>copy-resources</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>${project.build.directory}/izpack</outputDirectory>
+              <resources>
+                <resource>
+                  <directory>${project.basedir}/src/main/resources</directory>
+                </resource>
+              </resources>
+            </configuration>
+          </execution>
+          <!-- Copy the data files 
+          <execution>
+            <id>copy-data-files</id>
+            <phase>prepare-package</phase>
+            <goals>
+              <goal>copy-resources</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>${xwiki.data}</outputDirectory>
+              <resources>
+                <resource>
+                  <directory>${xwiki.container}/data</directory>
+                  <filtering>false</filtering>
+                  <excludes>
+                    <exclude>**/META-INF/**/*</exclude>
+                  </excludes>
+                </resource>
+              </resources>
+            </configuration>
+          </execution> -->
+        </executions>
+      </plugin> 
+       <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-dependency-plugin</artifactId>
+        <version>2.10</version>
+        <executions>
+          <execution>
+            <id>copy-dependencies</id>
+            <phase>prepare-package</phase>
+            <goals>
+              <goal>copy-dependencies</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>${project.build.directory}/izpack</outputDirectory>
+              <overWriteReleases>false</overWriteReleases>
+              <overWriteSnapshots>true</overWriteSnapshots>
+              <excludeTransitive>true</excludeTransitive>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.izpack</groupId>
+        <artifactId>izpack-maven-plugin</artifactId>
+          			<version>5.0.3</version>
+        <extensions>true</extensions>
+        <configuration>
+          <installFile>${project.build.directory}/izpack/installer.xml</installFile>
+          <baseDir>${project.build.directory}/izpack</baseDir>
+          <finalName>${project.build.finalName}</finalName>
+          <classifier>standard</classifier>
+        </configuration>
+      </plugin>
   	</plugins>
   </build>
+  <dependencies>
+  	<dependency>
+  		<groupId>it.rocci.clipboss</groupId>
+  		<artifactId>ClipboardBoss</artifactId>
+  		<version>0.0.2</version>
+  		<type>pom</type>
+  	</dependency>
+  </dependencies>
 </project>

@@ -3,11 +3,8 @@ package it.rocci.clipboss.model;
 import it.rocci.clipboss.utils.Utils;
 
 import java.awt.Image;
-import java.awt.datatransfer.DataFlavor;
 import java.awt.image.BufferedImage;
 import java.util.Date;
-
-import javax.swing.ImageIcon;
 
 public class ClipboardItem {
 	

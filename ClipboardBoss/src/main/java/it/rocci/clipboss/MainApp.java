@@ -2,16 +2,13 @@ package it.rocci.clipboss;
 
 import it.rocci.clipboss.ui.AboutDialog;
 import it.rocci.clipboss.ui.MainWindow;
-import it.rocci.clipboss.ui.MiniWindow;
 import it.rocci.clipboss.ui.SettingsDialog;
-import it.rocci.clipboss.ui.component.NotificationPanel;
 import it.rocci.clipboss.ui.component.ScratchPad;
 import it.rocci.clipboss.utils.ClipboardMonitor;
 import it.rocci.clipboss.utils.Utils;
 
 import java.awt.AWTException;
 import java.awt.CheckboxMenuItem;
-import java.awt.EventQueue;
 import java.awt.Image;
 import java.awt.MenuItem;
 import java.awt.PopupMenu;
@@ -22,9 +19,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseWheelEvent;
 import java.util.logging.Level;
 
 import javax.swing.JFrame;

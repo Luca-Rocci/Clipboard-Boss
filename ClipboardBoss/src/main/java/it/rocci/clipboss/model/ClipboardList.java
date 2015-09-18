@@ -5,7 +5,7 @@ import java.util.List;
 
 import javax.swing.AbstractListModel;
 
-public class ClipboardList extends AbstractListModel<ClipboardItem> {
+public class ClipboardList extends AbstractListModel {
 
 	private List<ClipboardItem> lClipboard = new ArrayList<ClipboardItem>();
 	

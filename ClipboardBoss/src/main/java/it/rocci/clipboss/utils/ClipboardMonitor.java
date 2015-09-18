@@ -2,7 +2,6 @@ package it.rocci.clipboss.utils;
 
 import it.rocci.clipboss.model.ClipboardItem;
 import it.rocci.clipboss.model.ClipboardList;
-import it.rocci.clipboss.ui.component.NotificationPanel;
 import it.rocci.clipboss.ui.component.ScratchPad;
 
 import java.awt.Image;
@@ -13,8 +12,6 @@ import java.awt.datatransfer.Transferable;
 import java.awt.image.BufferedImage;
 import java.util.Date;
 import java.util.logging.Level;
-
-import javax.swing.DefaultListModel;
 
 public class ClipboardMonitor implements Runnable {
 

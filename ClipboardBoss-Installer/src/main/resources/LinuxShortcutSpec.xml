@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+
+<shortcuts>
+<skipIfNotSupported/>
+<defaultCurrentUser/>
+<programGroup defaultName="Clipboard Boss"
+            location="applications"/>
+<shortcut
+name="Clipboard Boss"
+target="/usr/bin/java"
+commandLine="-Djava.security.policy=.java.policy -jar &quot;$INSTALL_PATH/ClipboardBoss.jar&quot;"
+description="Launch Clipboard Boss"
+iconFile="$INSTALL_PATH/ClipboardBoss.png"
+workingDirectory="$INSTALL_PATH"
+initialState="normal"
+programGroup="yes"
+desktop="no"
+applications="no"
+startMenu="no"
+startup="no"
+type="Application"
+terminal="false"
+encoding="UTF-8">
+
+<createForPack name="Clipboard Boss Core"/>
+</shortcut>
+
+   <shortcut
+     name="Clipboard Boss Uninstaller"
+     programGroup="yes"
+     desktop="no"
+     applications="no"
+     startMenu="no"
+     startup="no"
+     target="java"
+     commandLine="-jar &quot;$INSTALL_PATH/Uninstaller/uninstaller.jar&quot;"
+     workingDirectory="$INSTALL_PATH"
+     type="Application"
+     iconFile="trashcan_full"
+     iconIndex="0"
+     description="Uninstall Clipboard Boss">
+
+<createForPack name="Clipboard Boss Core"/>
+   </shortcut>
+
+</shortcuts>

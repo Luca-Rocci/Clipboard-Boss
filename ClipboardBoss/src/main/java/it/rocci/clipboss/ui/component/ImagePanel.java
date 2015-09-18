@@ -9,8 +9,20 @@ public class ImagePanel extends JPanel {
 
 	BufferedImage image;
 
+	public BufferedImage getImage() {
+		return image;
+	}
+
+	public void setImage(BufferedImage image) {
+		this.image = image;
+	}
+
 	public ImagePanel(BufferedImage img) {
 		this.image = img;
+	}
+	
+	public ImagePanel() {
+		this.image = null;
 	}
 
 	@Override
